@@ -10,12 +10,14 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
       "@utils/*": ["src/utils/*"],
       "@templates/*": ["src/components/templates/*"],
       "@pages/*": ["src/components/pages/*"],
-      "@organisms/*": ["src/components/organisms/*"]
+      "@organisms/*": ["src/components/organisms/*"],
+      "@icons/*": ["src/assets/icons/*"]
     }
   },
   "ts-node": {

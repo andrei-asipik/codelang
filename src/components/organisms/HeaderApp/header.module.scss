@@ -1,0 +1,35 @@
+@use '../../../styles/colors.scss' as color;
+
+.header {
+  background-color: color.$primary-color;
+  display: flex;
+  justify-content: space-between;
+  color: color.$text-color-white;
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    span {
+      letter-spacing: 3px;
+    }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+
+    .textBtn {
+      padding: 10px 5px;
+      color: inherit;
+    }
+  }
+}

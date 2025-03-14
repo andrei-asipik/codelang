@@ -1,0 +1,19 @@
+@use '../../../styles/colors.scss' as color;
+
+.sider {
+  background-color: color.$primary-color;
+  width: 300px;
+  border-top: 2px solid color.$text-color-white;
+
+  .menu {
+    background-color: inherit;
+
+    li {
+      color: color.$text-color-white;
+    }
+
+    li[role='separator'] {
+      border-color: color.$text-color-white;
+    }
+  }
+}

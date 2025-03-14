@@ -34,6 +34,7 @@ export default (env = {}) => {
         '@organisms': path.resolve(__dirname, 'src/components/organisms/'),
         '@pages': path.resolve(__dirname, 'src/components/pages/'),
         '@templates': path.resolve(__dirname, 'src/components/templates/'),
+        '@icons': path.resolve(__dirname, 'src/assets/icons/'),
       },
     },
     plugins: [
@@ -95,7 +96,11 @@ export default (env = {}) => {
           exclude: /\.module\.(css|scss)$/,
         },
         {
-          test: /\.(png|svg|jpg|jpeg|webp|gif)$/i,
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
+        },
+        {
+          test: /\.(png|jpg|jpeg|webp|gif)$/i,
           type: 'asset/resource',
           generator: { filename: 'images/[hash][ext][query]' },
         },

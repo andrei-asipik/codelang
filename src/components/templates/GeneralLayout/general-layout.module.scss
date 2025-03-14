@@ -1,4 +1,17 @@
-.pageLayout {
-  display: flex;
-  justify-content: center;
+.mainContainer {
+  min-height: 100vh;
+
+  .sider {
+    background-color: rgb(98, 131, 160);
+    width: 200px;
+  }
+
+  .container {
+    .content {
+      padding: 24px;
+      margin: 0;
+      min-height: 280px;
+      border-radius: 8px;
+    }
+  }
 }
