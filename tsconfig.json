@@ -17,7 +17,8 @@
       "@templates/*": ["src/components/templates/*"],
       "@pages/*": ["src/components/pages/*"],
       "@organisms/*": ["src/components/organisms/*"],
-      "@icons/*": ["src/assets/icons/*"]
+      "@icons/*": ["src/assets/icons/*"],
+      "@services/*": ["src/services/*"]
     }
   },
   "ts-node": {

@@ -35,6 +35,7 @@ export default (env = {}) => {
         '@pages': path.resolve(__dirname, 'src/components/pages/'),
         '@templates': path.resolve(__dirname, 'src/components/templates/'),
         '@icons': path.resolve(__dirname, 'src/assets/icons/'),
+        '@services': path.resolve(__dirname, 'src/services/'),
       },
     },
     plugins: [
