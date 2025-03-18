@@ -1,4 +1,4 @@
-import { Menu, MenuProps } from 'antd';
+import { Button, Menu, MenuProps } from 'antd';
 import styles from './sider.module.scss';
 import Sider from 'antd/es/layout/Sider';
 import Home from '@icons/home.svg';
@@ -6,6 +6,7 @@ import User from '@icons/user.svg';
 import Users from '@icons/users.svg';
 import Doc from '@icons/doc.svg';
 import UserQuestion from '@icons/user-question.svg';
+import { logoutUser } from '@services/authService';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -48,9 +49,15 @@ const items: MenuItem[] = [
     label: 'Users',
     icon: <Users />,
   },
+  {
+    type: 'divider',
+  },
 ];
 
 export const SiderApp = () => {
+  const logout = () => {
+    logoutUser();
+  };
   //   const onClick: MenuProps['onClick'] = (e) => {
   //     console.log('click ', e);
   //   };
@@ -62,6 +69,11 @@ export const SiderApp = () => {
         items={items}
         className={styles.menu}
       />
+      <div className={styles.bottom}>
+        <Button className={styles.button} onClick={logout}>
+          Sign Out
+        </Button>
+      </div>
     </Sider>
   );
 };

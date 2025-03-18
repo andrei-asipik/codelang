@@ -13,7 +13,7 @@ export const HeaderApp = () => (
       <span>CODELANG</span>
     </div>
     <div className={styles.right}>
-      <Button>Sign In</Button>
+      <Button href="/auth">Sign In</Button>
       <Button type="text" className={styles.textBtn}>
         <Language />
         EN

@@ -5,6 +5,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Dotenv from 'dotenv-webpack';
 import 'dotenv/config';
+import webpack from 'webpack';
 
 import { merge } from 'webpack-merge';
 import path from 'path';
@@ -40,6 +41,9 @@ export default (env = {}) => {
     },
     plugins: [
       new Dotenv(),
+      new webpack.DefinePlugin({
+        'process.env.CODELANG_API_URL': JSON.stringify(process.env.CODELANG_API_URL),
+      }),
       new HtmlWebpackPlugin({
         template: join(__dirname, 'src', 'index.html'),
         filename: 'index.html',
@@ -126,6 +130,18 @@ export default (env = {}) => {
       open: true,
       static: { directory: join(__dirname, 'dist') },
       historyApiFallback: true,
+      proxy: [
+        {
+          context: ['/api'],
+          target: process.env.CODELANG_API_URL,
+          changeOrigin: true,
+          secure: false,
+          logLevel: 'debug',
+          onProxyReq: (proxyReq) => {
+            console.log('Proxying request to:', proxyReq.getHeader('host') + proxyReq.path);
+          },
+        },
+      ],
     },
     target: 'web',
     plugins: [

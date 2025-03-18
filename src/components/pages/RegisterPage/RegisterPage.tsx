@@ -113,6 +113,9 @@ export const RegisterPage = () => {
           </Button>
         </div>
       </Form>
+      <div className={styles.link}>
+        Already have an account? &nbsp;<a href="/auth">Sign In</a>
+      </div>
     </div>
   );
 };

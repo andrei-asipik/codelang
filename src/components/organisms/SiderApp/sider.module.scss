@@ -4,6 +4,9 @@
   background-color: color.$primary-color;
   width: 300px;
   border-top: 2px solid color.$text-color-white;
+  display: flex;
+  flex-direction: column;
+  // height: 100%;
 
   .menu {
     background-color: inherit;
@@ -14,6 +17,17 @@
 
     li[role='separator'] {
       border-color: color.$text-color-white;
+    }
+  }
+
+  .bottom {
+    height: max-content;
+    // flex-direction: column;
+
+    // margin-top: auto;
+
+    .button {
+      margin: 20px;
     }
   }
 }
