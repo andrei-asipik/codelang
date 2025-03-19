@@ -5,8 +5,6 @@ import { RegisterData, registerUser } from '@services/authService';
 
 export const RegisterPage = () => {
   const onFinish: FormProps<RegisterData>['onFinish'] = async (values) => {
-    // console.log('Success:', values.username, values.password);
-
     const userData = {
       username: values.username,
       password: values.password,
@@ -14,13 +12,12 @@ export const RegisterPage = () => {
 
     try {
       await registerUser(userData);
+
       Modal.success({
         title: 'Success',
         content: 'Register was successful!',
       });
     } catch (error) {
-      // console.error('Registration error:', error);
-
       const errorMessage = error.response?.data?.message || error.message || 'Registration error';
 
       Modal.error({

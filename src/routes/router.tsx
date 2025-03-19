@@ -1,4 +1,5 @@
 import { ErrorBoundary } from '@organisms/ErrorBoundary/ErrorBoundary';
+import { AccountPage } from '@pages/AccountPage/AccountPage';
 import { AuthPage } from '@pages/AuthPage/AuthPage';
 import { HomePage } from '@pages/HomePage/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/register', element: <RegisterPage /> },
       { path: '/auth', element: <AuthPage /> },
+      { path: '/account', element: <AccountPage /> },
       {
         path: '*',
         loader: (): RedirectType => redirect('/404'),

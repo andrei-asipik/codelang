@@ -6,13 +6,26 @@
   border-top: 2px solid color.$text-color-white;
   display: flex;
   flex-direction: column;
-  // height: 100%;
+
+  .top {
+    margin: 20px 5px;
+    color: color.$text-color-white;
+
+    span {
+      margin: 0 5px;
+    }
+  }
 
   .menu {
     background-color: inherit;
 
     li {
       color: color.$text-color-white;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     li[role='separator'] {
@@ -21,10 +34,8 @@
   }
 
   .bottom {
-    height: max-content;
-    // flex-direction: column;
-
-    // margin-top: auto;
+    display: flex;
+    justify-content: center;
 
     .button {
       margin: 20px;

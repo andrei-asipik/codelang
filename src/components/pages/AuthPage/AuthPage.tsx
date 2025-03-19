@@ -1,8 +1,11 @@
 import { Input, Button, FormProps, Form, Modal } from 'antd';
 import styles from './auth-page.module.scss';
 import { loginUser, RegisterData } from '@services/authService';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthPage = () => {
+  const navigate = useNavigate();
+
   const onFinish: FormProps<RegisterData>['onFinish'] = async (values) => {
     const userData = {
       username: values.username,
@@ -11,10 +14,13 @@ export const AuthPage = () => {
 
     try {
       await loginUser(userData);
+
       Modal.success({
         title: 'Success',
         content: 'Authorization was successful!',
       });
+
+      navigate('/');
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message || 'Authorization error';
 

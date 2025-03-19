@@ -17,8 +17,10 @@
       "@templates/*": ["src/components/templates/*"],
       "@pages/*": ["src/components/pages/*"],
       "@organisms/*": ["src/components/organisms/*"],
+      "@molecules/*": ["src/components/molecules/*"],
       "@icons/*": ["src/assets/icons/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@styles/*": ["src/styles/*"]
     }
   },
   "ts-node": {

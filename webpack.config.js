@@ -32,11 +32,13 @@ export default (env = {}) => {
       alias: {
         '@components': path.resolve(__dirname, 'src/components/'),
         '@utils': path.resolve(__dirname, 'src/utils/'),
+        '@molecules': path.resolve(__dirname, 'src/components/molecules/'),
         '@organisms': path.resolve(__dirname, 'src/components/organisms/'),
         '@pages': path.resolve(__dirname, 'src/components/pages/'),
         '@templates': path.resolve(__dirname, 'src/components/templates/'),
         '@icons': path.resolve(__dirname, 'src/assets/icons/'),
         '@services': path.resolve(__dirname, 'src/services/'),
+        '@styles': path.resolve(__dirname, 'src/styles/'),
       },
     },
     plugins: [

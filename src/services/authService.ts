@@ -5,12 +5,9 @@ export interface RegisterData {
   password?: string;
 }
 
-const BASE_URL = 'https://codelang.vercel.app/api/';
-
 export const registerUser = async (userData: RegisterData) => {
   try {
-    const url = BASE_URL + 'register';
-    const response = await api.post(url, userData);
+    const response = await api.post('register', userData);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
