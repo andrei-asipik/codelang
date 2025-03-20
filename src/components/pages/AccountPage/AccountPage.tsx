@@ -11,7 +11,7 @@ import { deleteUser, getUserStatistic } from '@services/accountService';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp';
+import { SpinApp } from '@atoms/SpinApp/SpinApp';
 
 export const AccountPage = () => {
   const navigate = useNavigate();
