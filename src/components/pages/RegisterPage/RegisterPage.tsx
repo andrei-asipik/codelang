@@ -2,8 +2,11 @@ import { Input, Button, FormProps, Form, Modal } from 'antd';
 import styles from './register-page.module.scss';
 import { Rule } from 'antd/es/form';
 import { RegisterData, registerUser } from '@services/authService';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const onFinish: FormProps<RegisterData>['onFinish'] = async (values) => {
     const userData = {
       username: values.username,
@@ -17,6 +20,7 @@ export const RegisterPage = () => {
         title: 'Success',
         content: 'Register was successful!',
       });
+      navigate('/auth');
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message || 'Registration error';
 

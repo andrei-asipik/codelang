@@ -2,18 +2,20 @@ import { Input, Button, FormProps, Form, Modal } from 'antd';
 import styles from './auth-page.module.scss';
 import { loginUser, RegisterData } from '@services/authService';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 export const AuthPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const onFinish: FormProps<RegisterData>['onFinish'] = async (values) => {
+  const onSubmit: FormProps<RegisterData>['onFinish'] = async (values) => {
     const userData = {
       username: values.username,
       password: values.password,
     };
 
     try {
-      await loginUser(userData);
+      await loginUser(userData, dispatch);
 
       Modal.success({
         title: 'Success',
@@ -31,10 +33,6 @@ export const AuthPage = () => {
     }
   };
 
-  const onFinishFailed: FormProps<RegisterData>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
   return (
     <div className={styles.container}>
       <h2>Authorization</h2>
@@ -42,8 +40,7 @@ export const AuthPage = () => {
         name="basic"
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 26 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={onSubmit}
         autoComplete="off"
         className={styles.form}
       >

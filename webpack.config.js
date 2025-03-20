@@ -32,6 +32,7 @@ export default (env = {}) => {
       alias: {
         '@components': path.resolve(__dirname, 'src/components/'),
         '@utils': path.resolve(__dirname, 'src/utils/'),
+        '@atoms': path.resolve(__dirname, 'src/components/atoms/'),
         '@molecules': path.resolve(__dirname, 'src/components/molecules/'),
         '@organisms': path.resolve(__dirname, 'src/components/organisms/'),
         '@pages': path.resolve(__dirname, 'src/components/pages/'),
@@ -39,6 +40,7 @@ export default (env = {}) => {
         '@icons': path.resolve(__dirname, 'src/assets/icons/'),
         '@services': path.resolve(__dirname, 'src/services/'),
         '@styles': path.resolve(__dirname, 'src/styles/'),
+        '@store': path.resolve(__dirname, 'src/store/'),
       },
     },
     plugins: [

@@ -1,23 +1,44 @@
 import { Header } from 'antd/es/layout/layout';
 import styles from './header.module.scss';
 import { Button } from 'antd';
-import Logo from '../../../assets/icons/code.svg';
-import Language from '../../../assets/icons/language.svg';
+import Logo from '@icons/code.svg';
+import Language from '@icons/language.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/store/store';
+import { logoutUser } from '@services/authService';
+import { useNavigate } from 'react-router-dom';
 
-export const HeaderApp = () => (
-  <Header className={styles.header}>
-    <div className={styles.left}>
-      <div className={styles.logo}>
-        <Logo />
+export const HeaderApp = () => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    logoutUser(dispatch);
+    navigate('/auth');
+  };
+
+  return (
+    <Header className={styles.header}>
+      <div className={styles.left}>
+        <div className={styles.logo}>
+          <Logo />
+        </div>
+        <span>CODELANG</span>
       </div>
-      <span>CODELANG</span>
-    </div>
-    <div className={styles.right}>
-      <Button href="/auth">Sign In</Button>
-      <Button type="text" className={styles.textBtn}>
-        <Language />
-        EN
-      </Button>
-    </div>
-  </Header>
-);
+      <div className={styles.right}>
+        {isAuthenticated ? (
+          <Button className={styles.button} onClick={logout}>
+            Sign Out
+          </Button>
+        ) : (
+          <Button href="/auth">Sign In</Button>
+        )}
+        <Button type="text" className={styles.textBtn}>
+          <Language />
+          EN
+        </Button>
+      </div>
+    </Header>
+  );
+};

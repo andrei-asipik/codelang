@@ -1,4 +1,4 @@
-import { Avatar, Button, Menu, MenuProps } from 'antd';
+import { Avatar, Menu, MenuProps } from 'antd';
 import styles from './sider.module.scss';
 import Sider from 'antd/es/layout/Sider';
 import Home from '@icons/home.svg';
@@ -6,8 +6,9 @@ import User from '@icons/user.svg';
 import Users from '@icons/users.svg';
 import Doc from '@icons/doc.svg';
 import UserQuestion from '@icons/user-question.svg';
-import { logoutUser } from '@services/authService';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '@store/store';
+import { useSelector } from 'react-redux';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -51,6 +52,8 @@ const items: MenuItem[] = [
 ];
 
 export const SiderApp = () => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
 
   const onClick: MenuProps['onClick'] = (e) => {
@@ -79,23 +82,13 @@ export const SiderApp = () => {
     }
   };
 
-  const logout = () => {
-    logoutUser();
-    navigate('/auth');
-  };
-
   return (
     <Sider className={styles.sider}>
       <div className={styles.top}>
-        <Avatar size="large" icon={<Home />} />
-        <span>Username</span>
+        <Avatar size="large" icon={<User />} />
+        {isAuthenticated && <span>{user.username}</span>}
       </div>
       <Menu onClick={onClick} items={items} className={styles.menu} defaultActiveFirst />
-      <div className={styles.bottom}>
-        <Button className={styles.button} onClick={logout}>
-          Sign Out
-        </Button>
-      </div>
     </Sider>
   );
 };

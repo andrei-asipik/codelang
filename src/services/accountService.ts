@@ -1,4 +1,6 @@
+import { setUser } from '@store/userSlice';
 import { api } from './api';
+import { AppDispatch } from '@store/store';
 
 export interface RegisterData {
   username?: string;
@@ -42,6 +44,16 @@ export const getUser = async () => {
 export const deleteUser = async () => {
   try {
     await api.delete('/me');
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const getUserStatistic = async (dispatch: AppDispatch, id: number) => {
+  try {
+    const response = await api.get(`/users/${id}/statistic`);
+
+    dispatch(setUser(response.data.data));
   } catch (error) {
     throw new Error(error.response.data.message);
   }
