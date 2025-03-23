@@ -4,9 +4,13 @@ import Programming from '@icons/programming.svg';
 import Like from '@icons/like.svg';
 import Dislike from '@icons/dislike.svg';
 import Comment from '@icons/comment.svg';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useState } from 'react';
+import { addSnippetsMark, getSnippetById } from '@services/snippetService';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
+import { useNavigate } from 'react-router';
 
 interface User {
   id: string;
@@ -14,15 +18,20 @@ interface User {
   role: string;
 }
 
-interface Mark {
+export interface Mark {
   id: string;
   type: 'like' | 'dislike';
   user: User;
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   content: string;
+  user: {
+    id: string;
+    username: string;
+    role: string;
+  };
 }
 
 export interface SnippetProps {
@@ -39,7 +48,45 @@ interface SnippetComponentProps {
 }
 
 export const Snippet = ({ snippet }: SnippetComponentProps) => {
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
   const [code, setCode] = useState(snippet.code);
+  const [marks, setMarks] = useState<Mark[]>(snippet.marks);
+
+  const user = useSelector((state: RootState) => state.user.user);
+  const activeUserId = user?.id ? String(user.id) : '';
+
+  const likes = marks.filter((m: { type: string }) => m.type === 'like').length;
+  const dislikes = marks.filter((m: { type: string }) => m.type === 'dislike').length;
+
+  const hasLike = marks.some((mark) => mark.type === 'like' && mark.user.id === activeUserId);
+  const hasDislike = marks.some((mark) => mark.type === 'dislike' && mark.user.id === activeUserId);
+
+  const addMark = async (mark: Mark['type']) => {
+    try {
+      await addSnippetsMark(snippet.id, mark);
+
+      const updatedSnippet = await getSnippetById(snippet.id);
+      setMarks(updatedSnippet.data.marks);
+    } catch (error) {
+      Modal.error({
+        title: 'Error',
+        content: error.response?.message || 'The reaction has already been recorded',
+      });
+    }
+  };
+
+  const onClick = (mark: Mark['type']) => {
+    if (isAuthenticated) {
+      addMark(mark);
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  const handleLikeClick = () => onClick('like');
+  const handleDislikeClick = () => onClick('dislike');
 
   return (
     <div className={styles.snippet}>
@@ -56,17 +103,29 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
       <CodeEditor
         value={code}
         language="javascript"
-        placeholder="Введите код..."
+        placeholder="Enter code..."
         onChange={(evn) => setCode(evn.target.value)}
         disabled
         className={styles.code}
       />
       <div className={styles.footer}>
         <div>
-          {snippet.marks.filter((m: { type: string }) => m.type === 'like').length}
-          <Button shape="circle" type="text" icon={<Like className={styles.icon} />} />
-          {snippet.marks.filter((m: { type: string }) => m.type === 'dislike').length}
-          <Button shape="circle" type="text" icon={<Dislike className={styles.icon} />} />
+          {likes}
+          <Button
+            shape="circle"
+            type="text"
+            icon={<Like className={styles.icon} />}
+            onClick={handleLikeClick}
+            disabled={hasLike}
+          />
+          {dislikes}
+          <Button
+            shape="circle"
+            type="text"
+            icon={<Dislike className={styles.icon} />}
+            onClick={handleDislikeClick}
+            disabled={hasDislike}
+          />
         </div>
         <div>
           {snippet.comments.length}

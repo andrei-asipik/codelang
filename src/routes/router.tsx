@@ -3,6 +3,7 @@ import { AccountPage } from '@pages/AccountPage/AccountPage';
 import { AuthPage } from '@pages/AuthPage/AuthPage';
 import { HomePage } from '@pages/HomePage/HomePage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
+import { PostPage } from '@pages/PostPage/PostPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
 import { GeneralLayout } from '@templates/GeneralLayout/GeneralLayout';
 import { RedirectFunction, createBrowserRouter, redirect } from 'react-router-dom';
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       { path: '/', element: <HomePage /> },
+      { path: '/post', element: <PostPage /> },
       { path: '/register', element: <RegisterPage /> },
       { path: '/auth', element: <AuthPage /> },
       { path: '/account', element: <AccountPage /> },
