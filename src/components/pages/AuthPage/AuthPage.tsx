@@ -1,37 +1,25 @@
-import { Input, Button, FormProps, Form, Modal } from 'antd';
+import { Input, Button, Form } from 'antd';
 import styles from './auth-page.module.scss';
-import { loginUser, RegisterData } from '@services/authService';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
+import { loginUser, RegisterData } from '@store/authSlice';
+import { useEffect } from 'react';
 
 export const AuthPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-  const onSubmit: FormProps<RegisterData>['onFinish'] = async (values) => {
-    const userData = {
-      username: values.username,
-      password: values.password,
-    };
-
-    try {
-      await loginUser(userData, dispatch);
-
-      Modal.success({
-        title: 'Success',
-        content: 'Authorization was successful!',
-      });
-
-      navigate('/');
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Authorization error';
-
-      Modal.error({
-        title: 'Error',
-        content: String(errorMessage),
-      });
-    }
+  const onSubmit = async (values: RegisterData) => {
+    await dispatch(loginUser(values));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className={styles.container}>

@@ -4,17 +4,17 @@ import { Button } from 'antd';
 import Logo from '@icons/code.svg';
 import Language from '@icons/language.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/store/store';
-import { logoutUser } from '@services/authService';
+import { AppDispatch, RootState } from 'src/store/store';
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '@store/authSlice';
 
 export const HeaderApp = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const logout = () => {
-    logoutUser(dispatch);
+  const logout = async () => {
+    dispatch(logoutUser());
     navigate('/auth');
   };
 

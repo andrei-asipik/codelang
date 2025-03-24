@@ -1,12 +1,56 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { clearUser, setUser } from './userSlice';
+import { api } from '@services/api';
 
 interface AuthState {
   isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+}
+export interface RegisterData {
+  username: string;
+  password: string;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
+  loading: false,
+  error: null,
 };
+
+export const loginUser = createAsyncThunk(
+  'auth/loginUser',
+  async (authData: { username: string; password: string }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post('/auth/login', authData);
+      dispatch(setUser(response.data.data));
+      return;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Authorization error');
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { dispatch }) => {
+  await api.post('/auth/logout', {});
+  dispatch(clearUser());
+  return;
+});
+
+export const registerUser = createAsyncThunk(
+  'auth/registerUser',
+  async (registerData: RegisterData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post('/register', registerData);
+      await dispatch(
+        loginUser({ username: registerData.username, password: registerData.password })
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Registration error');
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -18,6 +62,39 @@ const authSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      //loginUser
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || 'Authorization error';
+      })
+      //logoutUser
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isAuthenticated = false;
+      })
+      //registerUser
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || 'Registration error';
+      });
   },
 });
 

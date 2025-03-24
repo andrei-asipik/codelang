@@ -1,6 +1,5 @@
 import { Button, Card, Avatar, Modal } from 'antd';
 import styles from './account-page.module.scss';
-import { logoutUser } from '@services/authService';
 import User from '@icons/user.svg';
 import Logout from '@icons/logout.svg';
 import Trash from '@icons/trash.svg';
@@ -12,6 +11,7 @@ import { AppDispatch, RootState } from '@store/store';
 import { useEffect } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
 import { deleteUser, fetchUserStatistic } from '@store/userSlice';
+import { logoutUser } from '@store/authSlice';
 
 export const AccountPage = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const AccountPage = () => {
   }, [dispatch, id]);
 
   const onLogout = () => {
-    logoutUser(dispatch);
+    dispatch(logoutUser());
   };
 
   const showDeleteConfirm = () => {

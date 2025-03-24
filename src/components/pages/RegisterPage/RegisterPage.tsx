@@ -1,39 +1,31 @@
-import { Input, Button, FormProps, Form, Modal } from 'antd';
+import { Input, Button, Form } from 'antd';
 import styles from './register-page.module.scss';
 import { Rule } from 'antd/es/form';
-import { RegisterData, registerUser } from '@services/authService';
 import { useNavigate } from 'react-router-dom';
+import { RegisterData, registerUser } from '@store/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
+import { useEffect } from 'react';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-  const onFinish: FormProps<RegisterData>['onFinish'] = async (values) => {
+  const onFinish = async (values: RegisterData) => {
     const userData = {
       username: values.username,
       password: values.password,
     };
 
-    try {
-      await registerUser(userData);
+    await dispatch(registerUser(userData));
+  };
 
-      Modal.success({
-        title: 'Success',
-        content: 'Register was successful!',
-      });
-      navigate('/auth');
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Registration error';
-
-      Modal.error({
-        title: 'Error',
-        content: String(errorMessage),
-      });
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
     }
-  };
-
-  const onFinishFailed: FormProps<RegisterData>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  }, [isAuthenticated]);
 
   const validateConfirmPassword: Rule = ({ getFieldValue }) => ({
     validator(_, value) {
@@ -49,10 +41,9 @@ export const RegisterPage = () => {
       <h2>Registration</h2>
       <Form
         name="basic"
-        labelCol={{ span: 10 }}
+        labelCol={{ span: 12 }}
         wrapperCol={{ span: 26 }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
         className={styles.form}
       >

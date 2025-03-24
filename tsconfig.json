@@ -22,7 +22,8 @@
       "@icons/*": ["src/assets/icons/*"],
       "@services/*": ["src/services/*"],
       "@styles/*": ["src/styles/*"],
-      "@store/*": ["src/store/*"]
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   },
   "ts-node": {
