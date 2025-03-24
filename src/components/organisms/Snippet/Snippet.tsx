@@ -4,44 +4,12 @@ import Programming from '@icons/programming.svg';
 import Like from '@icons/like.svg';
 import Dislike from '@icons/dislike.svg';
 import Comment from '@icons/comment.svg';
-import { Button, Modal } from 'antd';
+import { Button } from 'antd';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import { useState } from 'react';
-import { addSnippetsMark, getSnippetById } from '@services/snippetService';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
 import { useNavigate } from 'react-router';
-
-interface User {
-  id: string;
-  username: string;
-  role: string;
-}
-
-export interface Mark {
-  id: string;
-  type: 'like' | 'dislike';
-  user: User;
-}
-
-export interface CommentProps {
-  id: string;
-  content: string;
-  user: {
-    id: string;
-    username: string;
-    role: string;
-  };
-}
-
-export interface SnippetProps {
-  id: string;
-  code: string;
-  language: string;
-  marks: Mark[];
-  user: User;
-  comments: CommentProps[];
-}
+import { addSnippetMark, Mark, SnippetProps } from '@store/snippetSlice';
 
 interface SnippetComponentProps {
   snippet: SnippetProps;
@@ -49,43 +17,33 @@ interface SnippetComponentProps {
 
 export const Snippet = ({ snippet }: SnippetComponentProps) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
-  const [marks, setMarks] = useState<Mark[]>(snippet.marks);
-
   const user = useSelector((state: RootState) => state.user.user);
   const activeUserId = user?.id ? String(user.id) : '';
 
-  const likes = marks.filter((m: { type: string }) => m.type === 'like').length;
-  const dislikes = marks.filter((m: { type: string }) => m.type === 'dislike').length;
+  const updatedSnippet =
+    useSelector((state: RootState) => state.snippets.snippets.find((s) => s.id === snippet.id)) ||
+    snippet;
 
+  const marks = updatedSnippet.marks;
+
+  const likes = marks.filter((m) => m.type === 'like').length;
+  const dislikes = marks.filter((m) => m.type === 'dislike').length;
   const hasLike = marks.some((mark) => mark.type === 'like' && mark.user.id === activeUserId);
   const hasDislike = marks.some((mark) => mark.type === 'dislike' && mark.user.id === activeUserId);
 
-  const addMark = async (mark: Mark['type']) => {
-    try {
-      await addSnippetsMark(snippet.id, mark);
-
-      const updatedSnippet = await getSnippetById(snippet.id);
-      setMarks(updatedSnippet.data.marks);
-    } catch (error) {
-      Modal.error({
-        title: 'Error',
-        content: error.response?.message || 'The reaction has already been recorded',
-      });
-    }
-  };
-
-  const onClick = (mark: Mark['type']) => {
+  const handleMarkClick = (mark: Mark['type']) => {
     if (isAuthenticated) {
-      addMark(mark);
+      dispatch(addSnippetMark({ id: snippet.id, mark }));
     } else {
       navigate('/auth');
     }
   };
 
-  const handleLikeClick = () => onClick('like');
-  const handleDislikeClick = () => onClick('dislike');
+  const handleLikeClick = () => handleMarkClick('like');
+  const handleDislikeClick = () => handleMarkClick('dislike');
+
   const handleCommentClick = () => {
     if (isAuthenticated) {
       navigate(`/post/${snippet.id}`);
@@ -99,15 +57,15 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
       <div className={styles.header}>
         <div>
           <User className={styles.icon} />
-          {snippet.user.username}
+          {updatedSnippet.user.username}
         </div>
         <div>
           <Programming className={styles.icon} />
-          {snippet.language}
+          {updatedSnippet.language}
         </div>
       </div>
       <CodeEditor
-        value={snippet.code}
+        value={updatedSnippet.code}
         language="javascript"
         placeholder="Enter code..."
         // onChange={(evn) => setCode(evn.target.value)}
@@ -134,7 +92,7 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
           />
         </div>
         <div>
-          {snippet.comments.length}
+          {updatedSnippet.comments.length}
           <Button
             shape="circle"
             type="text"
@@ -146,3 +104,4 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
     </div>
   );
 };
+export { Mark };

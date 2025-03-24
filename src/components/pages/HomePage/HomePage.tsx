@@ -1,39 +1,25 @@
-import { Modal, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import styles from './home-page.module.scss';
 import Logo from '@icons/code.svg';
-import { Snippet, SnippetProps } from '@organisms/Snippet/Snippet';
-import { getSnippets } from '@services/snippetService';
-import { useEffect, useState } from 'react';
+import { Snippet } from '@organisms/Snippet/Snippet';
+import { useEffect } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
+import { fetchSnippets, setCurrentPage, SnippetProps } from '@store/snippetSlice';
 
 export const HomePage = () => {
-  const [snippets, setSnippets] = useState<SnippetProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const dispatch = useDispatch<AppDispatch>();
+  const { snippets, loading, currentPage, totalPages } = useSelector(
+    (state: RootState) => state.snippets
+  );
 
   useEffect(() => {
-    const fetchSnippets = async () => {
-      try {
-        setLoading(true);
-        const response = await getSnippets(currentPage);
-        setSnippets(response.data.data);
-        setTotalPages(response.data.meta.totalItems);
-      } catch (error) {
-        Modal.error({
-          title: 'Error',
-          content: error.response?.data?.message || 'Something went wrong',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSnippets();
-  }, [currentPage]);
+    dispatch(fetchSnippets(currentPage));
+  }, [dispatch, currentPage]);
 
   const onChange = (page: number) => {
-    setCurrentPage(page);
+    dispatch(setCurrentPage(page));
   };
 
   return (
@@ -56,7 +42,7 @@ export const HomePage = () => {
         <>
           {snippets.length > 0 ? (
             <div className={styles.snippetsList}>
-              {snippets.map((snippet) => (
+              {snippets.map((snippet: SnippetProps) => (
                 <Snippet key={snippet.id} snippet={snippet} />
               ))}
             </div>
