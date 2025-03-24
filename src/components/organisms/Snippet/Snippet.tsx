@@ -24,7 +24,7 @@ export interface Mark {
   user: User;
 }
 
-export interface Comment {
+export interface CommentProps {
   id: string;
   content: string;
   user: {
@@ -40,7 +40,7 @@ export interface SnippetProps {
   language: string;
   marks: Mark[];
   user: User;
-  comments: Comment[];
+  comments: CommentProps[];
 }
 
 interface SnippetComponentProps {
@@ -51,7 +51,6 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  const [code, setCode] = useState(snippet.code);
   const [marks, setMarks] = useState<Mark[]>(snippet.marks);
 
   const user = useSelector((state: RootState) => state.user.user);
@@ -87,6 +86,13 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
 
   const handleLikeClick = () => onClick('like');
   const handleDislikeClick = () => onClick('dislike');
+  const handleCommentClick = () => {
+    if (isAuthenticated) {
+      navigate(`/post/${snippet.id}`);
+    } else {
+      navigate('/auth');
+    }
+  };
 
   return (
     <div className={styles.snippet}>
@@ -101,10 +107,10 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
         </div>
       </div>
       <CodeEditor
-        value={code}
+        value={snippet.code}
         language="javascript"
         placeholder="Enter code..."
-        onChange={(evn) => setCode(evn.target.value)}
+        // onChange={(evn) => setCode(evn.target.value)}
         disabled
         className={styles.code}
       />
@@ -129,7 +135,12 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
         </div>
         <div>
           {snippet.comments.length}
-          <Button shape="circle" type="text" icon={<Comment className={styles.icon} />} />
+          <Button
+            shape="circle"
+            type="text"
+            icon={<Comment className={styles.icon} />}
+            onClick={handleCommentClick}
+          />
         </div>
       </div>
     </div>

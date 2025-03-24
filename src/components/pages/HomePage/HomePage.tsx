@@ -1,7 +1,7 @@
 import { Modal, Pagination } from 'antd';
 import styles from './home-page.module.scss';
 import Logo from '@icons/code.svg';
-import { Snippet, SnippetProps } from '@molecules/Snippet/Snippet';
+import { Snippet, SnippetProps } from '@organisms/Snippet/Snippet';
 import { getSnippets } from '@services/snippetService';
 import { useEffect, useState } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';

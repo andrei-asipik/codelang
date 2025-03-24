@@ -1,4 +1,4 @@
-import { Mark } from '@molecules/Snippet/Snippet';
+import { Mark } from '@organisms/Snippet/Snippet';
 import { api } from './api';
 
 export const getSnippets = async (page: number = 1) => {

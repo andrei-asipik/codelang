@@ -1,10 +1,9 @@
 import { RootState } from '@store/store';
+import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }: Element) => {
+export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/auth" />;
 };
-
-export default ProtectedRoute;

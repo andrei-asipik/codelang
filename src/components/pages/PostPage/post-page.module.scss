@@ -20,18 +20,4 @@
   h2 {
     margin-left: 35px;
   }
-
-  .icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .buttons {
-    display: flex;
-    flex-direction: column;
-
-    button {
-      color: color.$primary-color;
-    }
-  }
 }

@@ -1,3 +1,4 @@
+import { ProtectedRoute } from '@atoms/ProtectedRoute/ProtectedRoute';
 import { ErrorBoundary } from '@organisms/ErrorBoundary/ErrorBoundary';
 import { AccountPage } from '@pages/AccountPage/AccountPage';
 import { AuthPage } from '@pages/AuthPage/AuthPage';
@@ -16,10 +17,24 @@ export const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       { path: '/', element: <HomePage /> },
-      { path: '/post', element: <PostPage /> },
+      {
+        path: '/post/:id',
+        element: (
+          <ProtectedRoute>
+            <PostPage />
+          </ProtectedRoute>
+        ),
+      },
       { path: '/register', element: <RegisterPage /> },
       { path: '/auth', element: <AuthPage /> },
-      { path: '/account', element: <AccountPage /> },
+      {
+        path: '/account',
+        element: (
+          <ProtectedRoute>
+            <AccountPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '*',
         loader: (): RedirectType => redirect('/404'),

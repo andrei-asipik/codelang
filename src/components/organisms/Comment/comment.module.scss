@@ -1,0 +1,15 @@
+@use '@styles/colors.scss' as color;
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    color: color.$primary-color;
+  }
+}
