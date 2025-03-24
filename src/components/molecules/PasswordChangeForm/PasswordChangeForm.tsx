@@ -1,29 +1,44 @@
-import { Input, Button, FormProps, Form, Modal } from 'antd';
+import { Input, Button, Form, Modal } from 'antd';
 import styles from './password-change-form.module.scss';
 import { Rule } from 'antd/es/form';
-import { updatePassword, Password } from '@services/accountService';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
+import { clearError, updatePassword, UpdatePasswordData } from '@store/userSlice';
+import { useEffect } from 'react';
 
 export const PasswordChangeForm = () => {
-  const onFinish: FormProps<Password>['onFinish'] = async (values) => {
-    console.log(values);
-    const password = {
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, success, error } = useSelector((state: RootState) => state.user);
+  const [form] = Form.useForm();
+
+  const onFinishChangePassword = async (values: UpdatePasswordData) => {
+    dispatch(clearError());
+
+    const passwordData: UpdatePasswordData = {
       oldPassword: values.oldPassword,
       newPassword: values.newPassword,
     };
-    try {
-      await updatePassword(password);
-      Modal.success({
-        title: 'Success',
-        content: 'Updated!',
-      });
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Update error';
+    await dispatch(updatePassword(passwordData));
+    form.resetFields();
+  };
+
+  useEffect(() => {
+    if (error) {
       Modal.error({
         title: 'Error',
-        content: String(errorMessage),
+        content: error,
       });
     }
-  };
+  }, [error]);
+
+  useEffect(() => {
+    if (success) {
+      Modal.success({
+        title: 'Success',
+        content: 'Password changed successfully!',
+      });
+    }
+  }, [success]);
 
   const validateConfirmPassword: Rule = ({ getFieldValue }) => ({
     validator(_, value) {
@@ -37,7 +52,7 @@ export const PasswordChangeForm = () => {
   return (
     <Form
       name="change password"
-      onFinish={onFinish}
+      onFinish={onFinishChangePassword}
       autoComplete="off"
       className={styles.form}
       layout="vertical"
@@ -83,7 +98,7 @@ export const PasswordChangeForm = () => {
       </Form.Item>
 
       <div className={styles.button}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={loading}>
           Change password
         </Button>
       </div>

@@ -1,27 +1,26 @@
-import { Input, Button, FormProps, Form, Modal } from 'antd';
+import { Input, Button, Form, Modal } from 'antd';
 import styles from './username-change-form.module.scss';
-import { RegisterData } from '@services/authService';
-import { updateName } from '@services/accountService';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
+import { UpdateNameData, updateUserName } from '@store/userSlice';
+import { useEffect } from 'react';
 
 export const UserNameChangeForm = () => {
-  const onFinishChangeName: FormProps<RegisterData>['onFinish'] = async (values) => {
-    const userData = {
-      username: values.username,
-    };
-    try {
-      await updateName(userData);
-      Modal.success({
-        title: 'Success',
-        content: 'Updated!',
-      });
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Registration error';
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.user);
+
+  const onFinishChangeName = async (values: UpdateNameData) => {
+    await dispatch(updateUserName({ username: values.username })).unwrap();
+  };
+
+  useEffect(() => {
+    if (error) {
       Modal.error({
         title: 'Error',
-        content: String(errorMessage),
+        content: error,
       });
     }
-  };
+  }, [error]);
 
   return (
     <Form
@@ -45,7 +44,7 @@ export const UserNameChangeForm = () => {
       </Form.Item>
 
       <div className={styles.button}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={loading}>
           Save
         </Button>
       </div>

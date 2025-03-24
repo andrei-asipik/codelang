@@ -7,33 +7,42 @@ import Trash from '@icons/trash.svg';
 import { useNavigate } from 'react-router-dom';
 import { UserNameChangeForm } from '@molecules/UserNameChangeForm/UserNameChangeForm';
 import { PasswordChangeForm } from '@molecules/PasswordChangeForm/PasswordChangeForm';
-import { deleteUser, getUserStatistic } from '@services/accountService';
+import { deleteUser } from '@services/accountService';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@store/store';
+import { AppDispatch, RootState } from '@store/store';
 import { useEffect } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { fetchUserStatistic } from '@store/userSlice';
 
 export const AccountPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const user = useSelector((state: RootState) => state.user.user);
-  const { username, role, id, statistic } = user;
+  const { user, loading, error, success } = useSelector((state: RootState) => state.user);
+  const { username, role, id, statistic } = user || {};
 
   useEffect(() => {
-    const fetchUserStatistic = async () => {
-      if (!id) return;
-      try {
-        await getUserStatistic(dispatch, id);
-      } catch (error) {
-        Modal.error({
-          title: 'Error',
-          content: error.response?.data?.message || 'Failed to load user statistics.',
-        });
-      }
-    };
+    if (error) {
+      Modal.error({
+        title: 'Error',
+        content: error,
+      });
+    }
+  }, [error]);
 
-    fetchUserStatistic();
+  useEffect(() => {
+    if (success) {
+      Modal.success({
+        title: 'Success',
+        content: 'Password changed successfully!',
+      });
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchUserStatistic(id));
+    }
   }, [dispatch, id]);
 
   const onLogout = () => {
@@ -79,7 +88,7 @@ export const AccountPage = () => {
       ]
     : [];
 
-  return !statistic ? (
+  return loading || !user ? (
     <SpinApp />
   ) : (
     isAuthenticated && (
