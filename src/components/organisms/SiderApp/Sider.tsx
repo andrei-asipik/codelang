@@ -56,6 +56,8 @@ export const SiderApp = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
 
+  const username = user?.username || 'Guest';
+
   const onClick: MenuProps['onClick'] = (e) => {
     const key = e.key;
     switch (key) {
@@ -86,7 +88,7 @@ export const SiderApp = () => {
     <Sider className={styles.sider}>
       <div className={styles.top}>
         <Avatar size="large" icon={<User />} />
-        {isAuthenticated && <span>{user.username}</span>}
+        {isAuthenticated && <span>{username}</span>}
       </div>
       <Menu onClick={onClick} items={items} className={styles.menu} defaultActiveFirst />
     </Sider>

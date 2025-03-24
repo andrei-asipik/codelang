@@ -76,6 +76,14 @@ export const updatePassword = createAsyncThunk(
   }
 );
 
+export const deleteUser = createAsyncThunk('user/deleteUser', async (_, { rejectWithValue }) => {
+  try {
+    await api.delete('/me');
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || 'Failed to delete user');
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -132,6 +140,22 @@ const userSlice = createSlice({
       .addCase(updatePassword.rejected, (state, action) => {
         state.error =
           (action.payload as string) || action.error.message || 'Failed to change password';
+        state.loading = false;
+        state.success = false;
+      })
+      // deleteUser
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteUser.fulfilled, (state) => {
+        state.user = null;
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.error = (action.payload as string) || action.error.message || 'Failed to delete user';
         state.loading = false;
         state.success = false;
       });

@@ -7,37 +7,18 @@ import Trash from '@icons/trash.svg';
 import { useNavigate } from 'react-router-dom';
 import { UserNameChangeForm } from '@molecules/UserNameChangeForm/UserNameChangeForm';
 import { PasswordChangeForm } from '@molecules/PasswordChangeForm/PasswordChangeForm';
-import { deleteUser } from '@services/accountService';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { useEffect } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
-import { fetchUserStatistic } from '@store/userSlice';
+import { deleteUser, fetchUserStatistic } from '@store/userSlice';
 
 export const AccountPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const { user, loading, error, success } = useSelector((state: RootState) => state.user);
+  const { user, loading } = useSelector((state: RootState) => state.user);
   const { username, role, id, statistic } = user || {};
-
-  useEffect(() => {
-    if (error) {
-      Modal.error({
-        title: 'Error',
-        content: error,
-      });
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (success) {
-      Modal.success({
-        title: 'Success',
-        content: 'Password changed successfully!',
-      });
-    }
-  }, [success]);
 
   useEffect(() => {
     if (id) {
@@ -47,7 +28,6 @@ export const AccountPage = () => {
 
   const onLogout = () => {
     logoutUser(dispatch);
-    navigate('/auth');
   };
 
   const showDeleteConfirm = () => {
@@ -58,19 +38,8 @@ export const AccountPage = () => {
       okType: 'danger',
       cancelText: 'No',
       onOk: async () => {
-        try {
-          await deleteUser();
-          Modal.success({
-            title: 'Success',
-            content: 'Your account has been deleted!',
-            onOk: () => navigate('/auth'),
-          });
-        } catch (error) {
-          Modal.error({
-            title: 'Error',
-            content: error.response?.data?.message || 'Failed to delete account.',
-          });
-        }
+        navigate('/auth');
+        await dispatch(deleteUser());
       },
     });
   };

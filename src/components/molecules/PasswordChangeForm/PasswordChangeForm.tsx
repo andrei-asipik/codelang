@@ -1,14 +1,13 @@
-import { Input, Button, Form, Modal } from 'antd';
+import { Input, Button, Form } from 'antd';
 import styles from './password-change-form.module.scss';
 import { Rule } from 'antd/es/form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { clearError, updatePassword, UpdatePasswordData } from '@store/userSlice';
-import { useEffect } from 'react';
 
 export const PasswordChangeForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, success, error } = useSelector((state: RootState) => state.user);
+  const { loading } = useSelector((state: RootState) => state.user);
   const [form] = Form.useForm();
 
   const onFinishChangePassword = async (values: UpdatePasswordData) => {
@@ -21,24 +20,6 @@ export const PasswordChangeForm = () => {
     await dispatch(updatePassword(passwordData));
     form.resetFields();
   };
-
-  useEffect(() => {
-    if (error) {
-      Modal.error({
-        title: 'Error',
-        content: error,
-      });
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (success) {
-      Modal.success({
-        title: 'Success',
-        content: 'Password changed successfully!',
-      });
-    }
-  }, [success]);
 
   const validateConfirmPassword: Rule = ({ getFieldValue }) => ({
     validator(_, value) {

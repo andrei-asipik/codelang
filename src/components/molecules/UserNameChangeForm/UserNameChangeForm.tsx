@@ -1,26 +1,16 @@
-import { Input, Button, Form, Modal } from 'antd';
+import { Input, Button, Form } from 'antd';
 import styles from './username-change-form.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { UpdateNameData, updateUserName } from '@store/userSlice';
-import { useEffect } from 'react';
 
 export const UserNameChangeForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.user);
+  const { loading } = useSelector((state: RootState) => state.user);
 
   const onFinishChangeName = async (values: UpdateNameData) => {
-    await dispatch(updateUserName({ username: values.username })).unwrap();
+    await dispatch(updateUserName({ username: values.username }));
   };
-
-  useEffect(() => {
-    if (error) {
-      Modal.error({
-        title: 'Error',
-        content: error,
-      });
-    }
-  }, [error]);
 
   return (
     <Form
