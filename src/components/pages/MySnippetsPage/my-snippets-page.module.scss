@@ -1,0 +1,18 @@
+.home {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .snippetsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+}

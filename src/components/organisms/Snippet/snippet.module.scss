@@ -29,6 +29,10 @@
   }
   .footer {
     border-top: 1px solid color.$border-gray;
+
+    .buttons button {
+      color: color.$primary-color;
+    }
   }
 
   .code {

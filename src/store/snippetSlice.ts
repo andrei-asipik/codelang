@@ -68,6 +68,18 @@ export const fetchSnippets = createAsyncThunk(
   }
 );
 
+export const fetchSnippetsOfUser = createAsyncThunk(
+  'snippets/fetchSnippetsOfUser',
+  async ({ userId, page }: { userId: string; page: number }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/snippets?userId=${userId}&limit=10&page=${page}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+    }
+  }
+);
+
 export const addSnippetMark = createAsyncThunk(
   'snippets/addSnippetMark',
   async ({ id, mark }: { id: string; mark: Mark['type'] }, { rejectWithValue }) => {
@@ -92,6 +104,7 @@ export const fetchSnippetById = createAsyncThunk(
     }
   }
 );
+
 export const addComment = createAsyncThunk(
   'snippets/addComment',
   async ({ snippetId, content }: { snippetId: string; content: string }, { rejectWithValue }) => {
@@ -127,6 +140,18 @@ export const createSnippet = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+    }
+  }
+);
+
+export const deleteSnippet = createAsyncThunk(
+  'snippets/deleteSnippet',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      await api.delete(`/snippets/${id}`);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete snippet');
     }
   }
 );
@@ -233,6 +258,39 @@ const snippetSlice = createSlice({
       .addCase(createSnippet.rejected, (state, action) => {
         state.error = (action.payload as string) || action.error.message || 'Failed to add snippet';
         state.success = false;
+      })
+      // deleteSnippet
+      .addCase(deleteSnippet.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteSnippet.fulfilled, (state, action) => {
+        state.loading = false;
+        state.snippets = state.snippets.filter((snippet) => snippet.id !== action.payload);
+        if (state.currentSnippet && state.currentSnippet.id === action.payload) {
+          state.currentSnippet = null;
+        }
+      })
+      .addCase(deleteSnippet.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to delete snippet';
+      })
+
+      // fetchSnippetsOfUser
+      .addCase(fetchSnippetsOfUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSnippetsOfUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.snippets = action.payload.data.data;
+        state.totalPages = action.payload.data.meta.totalItems;
+      })
+      .addCase(fetchSnippetsOfUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to load snippets';
       });
   },
 });

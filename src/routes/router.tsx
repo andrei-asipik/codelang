@@ -3,6 +3,7 @@ import { ErrorBoundary } from '@organisms/ErrorBoundary/ErrorBoundary';
 import { AccountPage } from '@pages/AccountPage/AccountPage';
 import { AuthPage } from '@pages/AuthPage/AuthPage';
 import { HomePage } from '@pages/HomePage/HomePage';
+import { MySnippetsPage } from '@pages/MySnippetsPage/MySnippetsPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { PostPage } from '@pages/PostPage/PostPage';
 import { PostSnippetPage } from '@pages/PostSnippetPage/PostSnippetPage';
@@ -29,6 +30,14 @@ export const router = createBrowserRouter([
       { path: '/register', element: <RegisterPage /> },
       { path: '/auth', element: <AuthPage /> },
       {
+        path: '/account',
+        element: (
+          <ProtectedRoute>
+            <AccountPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: '/postsnippet',
         element: (
           <ProtectedRoute>
@@ -37,10 +46,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/account',
+        path: '/mysnippets',
         element: (
           <ProtectedRoute>
-            <AccountPage />
+            <MySnippetsPage />
           </ProtectedRoute>
         ),
       },

@@ -71,7 +71,7 @@ export const SiderApp = () => {
         navigate('/postsnippet');
         break;
       case 'mysnippet':
-        navigate('/mysnippet');
+        navigate('/mysnippets');
         break;
       case 'questions':
         navigate('/questions');

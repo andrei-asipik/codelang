@@ -9,7 +9,7 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { useNavigate } from 'react-router';
-import { addSnippetMark, Mark, SnippetProps } from '@store/snippetSlice';
+import { addSnippetMark, deleteSnippet, Mark, SnippetProps } from '@store/snippetSlice';
 
 interface SnippetComponentProps {
   snippet: SnippetProps;
@@ -20,7 +20,7 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const user = useSelector((state: RootState) => state.user.user);
-  const activeUserId = user?.id ? String(user.id) : '';
+  const activeUserId = String(user?.id);
 
   const updatedSnippet =
     useSelector((state: RootState) => state.snippets.snippets.find((s) => s.id === snippet.id)) ||
@@ -28,8 +28,8 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
 
   const marks = updatedSnippet.marks;
 
-  const likes = marks.filter((m) => m.type === 'like').length;
-  const dislikes = marks.filter((m) => m.type === 'dislike').length;
+  const likes = marks.filter((mark) => mark.type === 'like').length;
+  const dislikes = marks.filter((mark) => mark.type === 'dislike').length;
   const hasLike = marks.some((mark) => mark.type === 'like' && mark.user.id === activeUserId);
   const hasDislike = marks.some((mark) => mark.type === 'dislike' && mark.user.id === activeUserId);
 
@@ -43,6 +43,14 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
 
   const handleLikeClick = () => handleMarkClick('like');
   const handleDislikeClick = () => handleMarkClick('dislike');
+
+  const isAuthor = updatedSnippet.user.id === activeUserId;
+
+  const handleChangeClick = () => navigate(`/post/${snippet.id}`);
+  const handleDeleteClick = () => {
+    dispatch(deleteSnippet(snippet.id));
+    navigate('/');
+  };
 
   const handleCommentClick = () => {
     if (isAuthenticated) {
@@ -68,7 +76,6 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
         value={updatedSnippet.code}
         language="javascript"
         placeholder="Enter code..."
-        // onChange={(evn) => setCode(evn.target.value)}
         disabled
         className={styles.code}
       />
@@ -91,6 +98,16 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
             disabled={hasDislike}
           />
         </div>
+        {isAuthor && (
+          <div className={styles.buttons}>
+            <Button type="text" onClick={handleChangeClick}>
+              Change
+            </Button>
+            <Button type="text" onClick={handleDeleteClick}>
+              Delete
+            </Button>
+          </div>
+        )}
         <div>
           {updatedSnippet.comments.length}
           <Button
