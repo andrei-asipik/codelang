@@ -37,6 +37,7 @@ interface SnippetState {
   loading: boolean;
   snippetUpdating: boolean;
   error: string | null;
+  success: boolean;
   currentPage: number;
   totalPages: number;
   currentSnippet: SnippetProps | null;
@@ -48,6 +49,7 @@ const initialState: SnippetState = {
   loading: false,
   snippetUpdating: false,
   error: null,
+  success: false,
   currentPage: 1,
   totalPages: 1,
   currentSnippet: null,
@@ -113,6 +115,18 @@ export const deleteComment = createAsyncThunk(
       return { snippetId, commentId };
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to delete comment');
+    }
+  }
+);
+
+export const createSnippet = createAsyncThunk(
+  'snippets/createSnippet',
+  async ({ code, language }: { code: string; language: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/snippets`, { code, language });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Something went wrong');
     }
   }
 );
@@ -206,6 +220,19 @@ const snippetSlice = createSlice({
         state.commentLoading = false;
         state.error =
           (action.payload as string) || action.error.message || 'Failed to remove comment';
+      })
+      // createSnippet
+      .addCase(createSnippet.pending, (state) => {
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(createSnippet.fulfilled, (state) => {
+        state.success = true;
+        state.error = null;
+      })
+      .addCase(createSnippet.rejected, (state, action) => {
+        state.error = (action.payload as string) || action.error.message || 'Failed to add snippet';
+        state.success = false;
       });
   },
 });

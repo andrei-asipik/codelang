@@ -10,10 +10,14 @@ import { useNotifications } from '@hooks/useNotifications';
 
 export const GeneralLayout = () => {
   const { success: userSuccess, error: userError } = useSelector((state: RootState) => state.user);
+  const { success: snippetSuccess, error: snippetError } = useSelector(
+    (state: RootState) => state.snippets
+  );
   const { error: authError } = useSelector((state: RootState) => state.auth);
 
   useNotifications(userSuccess, userError);
   useNotifications(undefined, authError);
+  useNotifications(snippetSuccess, snippetError);
 
   return (
     <Layout className={styles.mainContainer}>

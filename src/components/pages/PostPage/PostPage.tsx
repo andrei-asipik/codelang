@@ -1,7 +1,7 @@
 import { Button, Divider, Input, List } from 'antd';
 import styles from './post-page.module.scss';
 import { Snippet } from '@organisms/Snippet/Snippet';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,6 +35,10 @@ export const PostPage = () => {
     }
   };
 
+  const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
+  };
+
   const comments = snippet?.comments || [];
 
   const sortedComments = [...(comments || [])].sort((a: CommentProps, b: CommentProps) => {
@@ -46,7 +50,7 @@ export const PostPage = () => {
   };
 
   return (
-    <div className={styles.home}>
+    <div className={styles.container}>
       {snippetLoading ? (
         <SpinApp />
       ) : (
@@ -62,7 +66,7 @@ export const PostPage = () => {
             <Divider />
             <Input.TextArea
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={handleTextChange}
               placeholder="Write comment..."
               required
             />
