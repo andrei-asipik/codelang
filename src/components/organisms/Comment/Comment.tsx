@@ -1,23 +1,16 @@
-import { Button, List, Modal } from 'antd';
+import { Button, List } from 'antd';
 import styles from './comment.module.scss';
 import User from '@icons/user.svg';
-import { CommentProps } from '@organisms/Snippet/Snippet';
-import { deleteComment } from '@services/commentService';
+import { CommentProps } from '@store/snippetSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@store/store';
+import { deleteComment } from '@store/commentSlice';
 
 export const Comment = ({ comment, userId }: { comment: CommentProps; userId: number }) => {
-  const handleDelete = () => {
-    const fetchComment = async () => {
-      try {
-        await deleteComment(comment.id);
-      } catch (error) {
-        Modal.error({
-          title: 'Error',
-          content: error.response?.data?.message || 'Something went wrong',
-        });
-      }
-    };
+  const dispatch = useDispatch<AppDispatch>();
 
-    fetchComment();
+  const handleDelete = () => {
+    dispatch(deleteComment(comment.id));
   };
 
   const canDelete = comment.user?.id === String(userId);

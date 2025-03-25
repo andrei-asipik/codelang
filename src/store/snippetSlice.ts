@@ -39,6 +39,7 @@ interface SnippetState {
   error: string | null;
   currentPage: number;
   totalPages: number;
+  currentSnippet: SnippetProps | null;
 }
 
 const initialState: SnippetState = {
@@ -48,6 +49,7 @@ const initialState: SnippetState = {
   error: null,
   currentPage: 1,
   totalPages: 1,
+  currentSnippet: null,
 };
 
 export const fetchSnippets = createAsyncThunk(
@@ -75,32 +77,18 @@ export const addSnippetMark = createAsyncThunk(
   }
 );
 
-// export const fetchSnippetById = createAsyncThunk(
-//   'snippets/fetchSnippetById',
-//   async (id: string, { rejectWithValue }) => {
-//     try {
-//       const response = await api.get(`/snippets/${id}`);
-//       return response.data.data; // Предполагаем, что данные лежат в response.data.data
-//     } catch (error) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to load snippet');
-//     }
-//   }
-// );
+export const fetchSnippetById = createAsyncThunk(
+  'snippets/fetchSnippetById',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/snippets/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to load snippet');
+    }
+  }
+);
 
-// export const addComment = createAsyncThunk(
-//   'snippets/addComment',
-//   async ({ snippetId, content }: { snippetId: string; content: string }, { rejectWithValue }) => {
-//     try {
-//       await api.post(`/comments`, { content, snippetId });
-//       const response = await api.get(`/snippets/${snippetId}`);
-//       return response.data.data; // Обновленный сниппет с комментариями
-//     } catch (error) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to add comment');
-//     }
-//   }
-// );
-
-// Срез для сниппетов
 const snippetSlice = createSlice({
   name: 'snippets',
   initialState,
@@ -111,7 +99,7 @@ const snippetSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      //fetchSnippets
+      // fetchSnippets
       .addCase(fetchSnippets.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -126,7 +114,7 @@ const snippetSlice = createSlice({
         state.error =
           (action.payload as string) || action.error.message || 'Failed to load snippets';
       })
-      //addSnippetMark
+      // addSnippetMark
       .addCase(addSnippetMark.pending, (state) => {
         state.snippetUpdating = true;
         state.error = null;
@@ -143,33 +131,21 @@ const snippetSlice = createSlice({
       .addCase(addSnippetMark.rejected, (state, action) => {
         state.snippetUpdating = false;
         state.error = (action.payload as string) || action.error.message || 'Failed to add mark';
+      })
+      // fetchSnippetById
+      .addCase(fetchSnippetById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSnippetById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentSnippet = action.payload;
+      })
+      .addCase(fetchSnippetById.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to load snippet';
       });
-    //   // Обработка fetchSnippetById
-    //   .addCase(fetchSnippetById.pending, (state) => {
-    //     state.loading = true;
-    //     state.error = null;
-    //   })
-    //   .addCase(fetchSnippetById.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     state.currentSnippet = action.payload;
-    //   })
-    //   .addCase(fetchSnippetById.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.error = action.payload as string;
-    //   })
-    // Обработка addComment
-    //   .addCase(addComment.pending, (state) => {
-    //     state.loading = true;
-    //     state.error = null;
-    //   })
-    //   .addCase(addComment.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     // state.currentSnippet = action.payload;
-    //   })
-    //   .addCase(addComment.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.error = action.payload as string;
-    //   });
   },
 });
 
