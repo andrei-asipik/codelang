@@ -7,29 +7,24 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { Comment } from '@organisms/Comment/Comment';
-import { fetchSnippetById } from '@store/snippetSlice';
-import { CommentProps } from '@store/snippetSlice';
-import { addComment, fetchCommentsBySnippetId } from '@store/commentSlice';
+import { CommentProps, fetchSnippetById } from '@store/snippetSlice';
+import { addComment } from '@store/snippetSlice';
 
 export const PostPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { id: postId } = useParams();
 
-  const user = useSelector((state: RootState) => state.user.user);
-  const { id: userId } = user;
-
-  const { currentSnippet: snippet, loading: snippetLoading } = useSelector(
-    (state: RootState) => state.snippets
-  );
-
-  const { comments, loading: commentLoading } = useSelector((state: RootState) => state.comments);
+  const {
+    currentSnippet: snippet,
+    loading: snippetLoading,
+    commentLoading,
+  } = useSelector((state: RootState) => state.snippets);
 
   const [text, setText] = useState('');
 
   useEffect(() => {
     if (postId) {
       dispatch(fetchSnippetById(postId));
-      dispatch(fetchCommentsBySnippetId(postId));
     }
   }, [dispatch, postId]);
 
@@ -40,13 +35,14 @@ export const PostPage = () => {
     }
   };
 
-  const sortedComments =
-    comments?.sort((a: CommentProps, b: CommentProps) => {
-      return Number(b.id) - Number(a.id);
-    }) || [];
+  const comments = snippet?.comments || [];
+
+  const sortedComments = [...(comments || [])].sort((a: CommentProps, b: CommentProps) => {
+    return Number(b.id) - Number(a.id);
+  });
 
   const renderComment = (comment: CommentProps) => {
-    return <Comment key={comment.id} comment={comment} userId={userId} />;
+    return <Comment key={comment.id} comment={comment} snippetId={snippet?.id} />;
   };
 
   return (
@@ -74,7 +70,6 @@ export const PostPage = () => {
               Add comment
             </Button>
             <Divider />
-
             {commentLoading ? (
               <SpinApp />
             ) : (

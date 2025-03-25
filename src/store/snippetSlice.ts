@@ -40,6 +40,7 @@ interface SnippetState {
   currentPage: number;
   totalPages: number;
   currentSnippet: SnippetProps | null;
+  commentLoading: boolean;
 }
 
 const initialState: SnippetState = {
@@ -50,6 +51,7 @@ const initialState: SnippetState = {
   currentPage: 1,
   totalPages: 1,
   currentSnippet: null,
+  commentLoading: false,
 };
 
 export const fetchSnippets = createAsyncThunk(
@@ -85,6 +87,32 @@ export const fetchSnippetById = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to load snippet');
+    }
+  }
+);
+export const addComment = createAsyncThunk(
+  'snippets/addComment',
+  async ({ snippetId, content }: { snippetId: string; content: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/comments`, { content, snippetId });
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to add comment');
+    }
+  }
+);
+
+export const deleteComment = createAsyncThunk(
+  'snippets/deleteComment',
+  async (
+    { snippetId, commentId }: { snippetId: string; commentId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      await api.delete(`/comments/${commentId}`);
+      return { snippetId, commentId };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete comment');
     }
   }
 );
@@ -145,6 +173,39 @@ const snippetSlice = createSlice({
         state.loading = false;
         state.error =
           (action.payload as string) || action.error.message || 'Failed to load snippet';
+      })
+      // addComment
+      .addCase(addComment.pending, (state) => {
+        state.commentLoading = true;
+        state.error = null;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        state.commentLoading = false;
+        if (state.currentSnippet && state.currentSnippet.id === action.meta.arg.snippetId) {
+          state.currentSnippet.comments.push(action.payload);
+        }
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.commentLoading = false;
+        state.error = (action.payload as string) || action.error.message || 'Failed to add comment';
+      })
+      // deleteComment
+      .addCase(deleteComment.pending, (state) => {
+        state.commentLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.commentLoading = false;
+        if (state.currentSnippet && state.currentSnippet.id === action.payload.snippetId) {
+          state.currentSnippet.comments = state.currentSnippet.comments.filter(
+            (comment) => comment.id !== action.payload.commentId
+          );
+        }
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.commentLoading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to remove comment';
       });
   },
 });

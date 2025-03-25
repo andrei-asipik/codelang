@@ -1,16 +1,17 @@
 import { Button, List } from 'antd';
 import styles from './comment.module.scss';
 import User from '@icons/user.svg';
-import { CommentProps } from '@store/snippetSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@store/store';
-import { deleteComment } from '@store/commentSlice';
+import { CommentProps, deleteComment } from '@store/snippetSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
 
-export const Comment = ({ comment, userId }: { comment: CommentProps; userId: number }) => {
+export const Comment = ({ comment, snippetId }: { comment: CommentProps; snippetId: string }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.user);
+  const { id: userId } = user;
 
   const handleDelete = () => {
-    dispatch(deleteComment(comment.id));
+    dispatch(deleteComment({ snippetId, commentId: comment.id }));
   };
 
   const canDelete = comment.user?.id === String(userId);
