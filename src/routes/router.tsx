@@ -9,6 +9,8 @@ import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { PostPage } from '@pages/PostPage/PostPage';
 import { PostSnippetPage } from '@pages/PostSnippetPage/PostSnippetPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
+import { UserPage } from '@pages/UserPage/UserPage';
+import { UsersPage } from '@pages/UsersPage/UsersPage';
 import { GeneralLayout } from '@templates/GeneralLayout/GeneralLayout';
 import { RedirectFunction, createBrowserRouter, redirect } from 'react-router-dom';
 
@@ -60,6 +62,22 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <ChangeSnippetPage />
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/users',
+        element: (
+          // <ProtectedRoute>
+          <UsersPage />
+          // </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/user/:id',
+        element: (
+          // <ProtectedRoute>
+          <UserPage />
+          // </ProtectedRoute>
         ),
       },
       {

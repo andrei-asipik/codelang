@@ -1,0 +1,48 @@
+@use '@styles/colors.scss' as color;
+@use '@styles/fonts.scss' as fonts;
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 16px;
+
+  h1 span {
+    color: color.$primary-color;
+    font-style: italic;
+  }
+
+  .profile {
+    width: 100%;
+
+    .avatar {
+      padding: 10px;
+      width: 150px;
+      height: 150px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        span {
+          margin-left: 20px;
+        }
+
+        .name {
+          @include fonts.courier-prime-20;
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+  .statistics li {
+    list-style-type: none;
+  }
+}

@@ -42,6 +42,17 @@ export const ChangeSnippetPage = () => {
     setCode(event.target.value);
   };
 
+  const languageOptions = [
+    { value: 'JavaScript', label: 'JavaScript' },
+    { value: 'Python', label: 'Python' },
+    { value: 'Java', label: 'Java' },
+    { value: 'C/C++', label: 'C/C++' },
+    { value: 'C#', label: 'C#' },
+    { value: 'Go', label: 'Go' },
+    { value: 'Kotlin', label: 'Kotlin' },
+    { value: 'Ruby', label: 'Ruby' },
+  ];
+
   return (
     <div className={styles.container}>
       <h1>Change your snippet!</h1>
@@ -51,16 +62,7 @@ export const ChangeSnippetPage = () => {
         onChange={handleChange}
         showSearch
         placeholder="Select language"
-        options={[
-          { value: 'JavaScript', label: 'JavaScript' },
-          { value: 'Python', label: 'Python' },
-          { value: 'Java', label: 'Java' },
-          { value: 'C/C++', label: 'C/C++' },
-          { value: 'C#', label: 'C#' },
-          { value: 'Go', label: 'Go' },
-          { value: 'Kotlin', label: 'Kotlin' },
-          { value: 'Ruby', label: 'Ruby' },
-        ]}
+        options={languageOptions}
       />
 
       <div className={styles.snippet}>

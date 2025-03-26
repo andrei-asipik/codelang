@@ -24,6 +24,7 @@ interface UserState {
   loading?: boolean;
   error: string | null;
   success?: boolean;
+  users: User[];
 }
 
 const initialState: UserState = {
@@ -31,6 +32,7 @@ const initialState: UserState = {
   loading: false,
   error: null,
   success: false,
+  users: [],
 };
 
 export interface UpdateNameData {
@@ -81,6 +83,15 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (_, { reject
     await api.delete('/me');
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || 'Failed to delete user');
+  }
+});
+
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { rejectWithValue }) => {
+  try {
+    const response = await api.get(`/users?limit=100`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
   }
 });
 
@@ -158,6 +169,19 @@ const userSlice = createSlice({
         state.error = (action.payload as string) || action.error.message || 'Failed to delete user';
         state.loading = false;
         state.success = false;
+      })
+      // fetchSnippets
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload.data.data;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || 'Failed to load users';
       });
   },
 });
