@@ -40,6 +40,7 @@ export const UsersTable = ({ dataSource, onRowClick }: UsersTableProps) => {
       onRow={getRowProps}
       className={styles.list}
       rowClassName={styles.row}
+      bordered
     />
   );
 };

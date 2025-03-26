@@ -25,6 +25,7 @@ interface UserState {
   error: string | null;
   success?: boolean;
   users: User[];
+  totalItems: number;
 }
 
 const initialState: UserState = {
@@ -33,6 +34,7 @@ const initialState: UserState = {
   error: null,
   success: false,
   users: [],
+  totalItems: 1,
 };
 
 export interface UpdateNameData {
@@ -86,14 +88,17 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (_, { reject
   }
 });
 
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.get(`/users?limit=100`);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+export const fetchUsers = createAsyncThunk(
+  'users/fetchUsers',
+  async ({ page }: { page: number }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/users?limit=20&page=${page}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+    }
   }
-});
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -178,6 +183,7 @@ const userSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.users = action.payload.data.data;
+        state.totalItems = action.payload.data.meta.totalItems;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;

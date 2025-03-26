@@ -38,7 +38,7 @@ interface SnippetState {
   snippetUpdating: boolean;
   error: string | null;
   success: boolean;
-  totalPages: number;
+  totalItems: number;
   currentSnippet: SnippetProps | null;
   commentLoading: boolean;
 }
@@ -49,7 +49,7 @@ const initialState: SnippetState = {
   snippetUpdating: false,
   error: null,
   success: false,
-  totalPages: 1,
+  totalItems: 1,
   currentSnippet: null,
   commentLoading: false,
 };
@@ -183,7 +183,7 @@ const snippetSlice = createSlice({
       .addCase(fetchSnippets.fulfilled, (state, action) => {
         state.loading = false;
         state.snippets = action.payload.data.data;
-        state.totalPages = action.payload.data.meta.totalItems;
+        state.totalItems = action.payload.data.meta.totalItems;
       })
       .addCase(fetchSnippets.rejected, (state, action) => {
         state.loading = false;
@@ -294,7 +294,7 @@ const snippetSlice = createSlice({
       .addCase(fetchSnippetsOfUser.fulfilled, (state, action) => {
         state.loading = false;
         state.snippets = action.payload.data.data;
-        state.totalPages = action.payload.data.meta.totalItems;
+        state.totalItems = action.payload.data.meta.totalItems;
       })
       .addCase(fetchSnippetsOfUser.rejected, (state, action) => {
         state.loading = false;

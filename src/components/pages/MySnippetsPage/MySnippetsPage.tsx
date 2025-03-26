@@ -10,7 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 
 export const MySnippetsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { snippets, loading, totalPages } = useSelector((state: RootState) => state.snippets);
+  const { snippets, loading, totalItems } = useSelector((state: RootState) => state.snippets);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
 
@@ -37,7 +37,7 @@ export const MySnippetsPage = () => {
             simple
             current={currentPage}
             defaultPageSize={10}
-            total={totalPages}
+            total={totalItems}
             align="center"
             onChange={onChange}
           />

@@ -11,7 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 
 export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { snippets, loading, totalPages } = useSelector((state: RootState) => state.snippets);
+  const { snippets, loading, totalItems } = useSelector((state: RootState) => state.snippets);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -37,8 +37,8 @@ export const HomePage = () => {
           <Pagination
             simple
             current={currentPage}
-            defaultPageSize={10}
-            total={totalPages}
+            pageSize={10}
+            total={totalItems}
             align="center"
             onChange={onChange}
           />
