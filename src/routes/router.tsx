@@ -8,6 +8,7 @@ import { MySnippetsPage } from '@pages/MySnippetsPage/MySnippetsPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { PostPage } from '@pages/PostPage/PostPage';
 import { PostSnippetPage } from '@pages/PostSnippetPage/PostSnippetPage';
+import { QuestionsPage } from '@pages/QuestionsPage/QuestionsPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
 import { UserPage } from '@pages/UserPage/UserPage';
 import { UsersPage } from '@pages/UsersPage/UsersPage';
@@ -77,6 +78,14 @@ export const router = createBrowserRouter([
         element: (
           // <ProtectedRoute>
           <UserPage />
+          // </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/questions',
+        element: (
+          // <ProtectedRoute>
+          <QuestionsPage />
           // </ProtectedRoute>
         ),
       },
