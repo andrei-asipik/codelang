@@ -2,6 +2,7 @@ import { ProtectedRoute } from '@atoms/ProtectedRoute/ProtectedRoute';
 import { ErrorBoundary } from '@organisms/ErrorBoundary/ErrorBoundary';
 import { AccountPage } from '@pages/AccountPage/AccountPage';
 import { AuthPage } from '@pages/AuthPage/AuthPage';
+import { ChangeSnippetPage } from '@pages/ChangeSnippetPage/ChangeSnippetPage';
 import { HomePage } from '@pages/HomePage/HomePage';
 import { MySnippetsPage } from '@pages/MySnippetsPage/MySnippetsPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
@@ -50,6 +51,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MySnippetsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/changesnippet/:id',
+        element: (
+          <ProtectedRoute>
+            <ChangeSnippetPage />
           </ProtectedRoute>
         ),
       },

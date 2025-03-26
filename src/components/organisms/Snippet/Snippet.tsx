@@ -46,10 +46,9 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
 
   const isAuthor = updatedSnippet.user.id === activeUserId;
 
-  const handleChangeClick = () => navigate(`/post/${snippet.id}`);
+  const handleChangeClick = () => navigate(`/changesnippet/${snippet.id}`);
   const handleDeleteClick = () => {
     dispatch(deleteSnippet(snippet.id));
-    navigate('/');
   };
 
   const handleCommentClick = () => {

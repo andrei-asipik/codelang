@@ -146,12 +146,27 @@ export const createSnippet = createAsyncThunk(
 
 export const deleteSnippet = createAsyncThunk(
   'snippets/deleteSnippet',
-  async (id: string, { rejectWithValue }) => {
+  async (snippetId: string, { rejectWithValue }) => {
     try {
-      await api.delete(`/snippets/${id}`);
-      return id;
+      await api.delete(`/snippets/${snippetId}`);
+      return snippetId;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to delete snippet');
+    }
+  }
+);
+
+export const changeSnippet = createAsyncThunk(
+  'snippets/changeSnippet',
+  async (
+    { snippetId, code, language }: { snippetId: string; code: string; language: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.patch(`/snippets/${snippetId}`, { code, language });
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update snippet');
     }
   }
 );
@@ -291,6 +306,29 @@ const snippetSlice = createSlice({
         state.loading = false;
         state.error =
           (action.payload as string) || action.error.message || 'Failed to load snippets';
+      })
+      // changeSnippet
+      .addCase(changeSnippet.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(changeSnippet.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        if (state.currentSnippet && state.currentSnippet.id === action.payload.id) {
+          state.currentSnippet = action.payload;
+        }
+        const index = state.snippets.findIndex((s) => s.id === action.payload.id);
+        if (index !== -1) {
+          state.snippets[index] = action.payload;
+        }
+      })
+      .addCase(changeSnippet.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to update snippet';
+        state.success = false;
       });
   },
 });
