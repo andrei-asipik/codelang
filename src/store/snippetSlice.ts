@@ -38,7 +38,6 @@ interface SnippetState {
   snippetUpdating: boolean;
   error: string | null;
   success: boolean;
-  currentPage: number;
   totalPages: number;
   currentSnippet: SnippetProps | null;
   commentLoading: boolean;
@@ -50,7 +49,6 @@ const initialState: SnippetState = {
   snippetUpdating: false,
   error: null,
   success: false,
-  currentPage: 1,
   totalPages: 1,
   currentSnippet: null,
   commentLoading: false,
@@ -174,11 +172,7 @@ export const changeSnippet = createAsyncThunk(
 const snippetSlice = createSlice({
   name: 'snippets',
   initialState,
-  reducers: {
-    setCurrentPage: (state, action) => {
-      state.currentPage = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // fetchSnippets
@@ -333,5 +327,4 @@ const snippetSlice = createSlice({
   },
 });
 
-export const { setCurrentPage } = snippetSlice.actions;
 export default snippetSlice.reducer;
