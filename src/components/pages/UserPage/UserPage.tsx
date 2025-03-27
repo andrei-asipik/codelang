@@ -1,6 +1,6 @@
 import { Card, Avatar } from 'antd';
 import styles from './user-page.module.scss';
-import User from '@icons/user.svg';
+import { User } from '@icons/index';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';

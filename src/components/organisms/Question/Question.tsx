@@ -1,6 +1,5 @@
 import styles from './question.module.scss';
-import UserQuestion from '@icons/user-question.svg';
-import Eye from '@icons/eye.svg';
+import { UserQuestion, Eye } from '@icons/index';
 import { useNavigate } from 'react-router';
 import { QuestionProps } from '@store/questionSlice';
 import { Button } from 'antd';

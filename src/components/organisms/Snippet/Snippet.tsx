@@ -1,9 +1,5 @@
 import styles from './snippet.module.scss';
-import User from '@icons/user.svg';
-import Programming from '@icons/programming.svg';
-import Like from '@icons/like.svg';
-import Dislike from '@icons/dislike.svg';
-import Comment from '@icons/comment.svg';
+import { User, Programming, Like, Dislike, Comment } from '@icons/index';
 import { Button } from 'antd';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useDispatch, useSelector } from 'react-redux';

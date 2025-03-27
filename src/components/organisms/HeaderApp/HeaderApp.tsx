@@ -1,8 +1,7 @@
 import { Header } from 'antd/es/layout/layout';
 import styles from './header.module.scss';
 import { Button } from 'antd';
-import Logo from '@icons/code.svg';
-import Language from '@icons/language.svg';
+import { Code, Language } from '@icons/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/store/store';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +29,7 @@ export const HeaderApp = () => {
     <Header className={styles.header}>
       <div className={styles.left}>
         <div className={styles.logo}>
-          <Logo />
+          <Code />
         </div>
         <span>CODELANG</span>
       </div>

@@ -1,11 +1,7 @@
 import { Avatar, Menu, MenuProps } from 'antd';
 import styles from './sider.module.scss';
 import Sider from 'antd/es/layout/Sider';
-import Home from '@icons/home.svg';
-import User from '@icons/user.svg';
-import Users from '@icons/users.svg';
-import Doc from '@icons/doc.svg';
-import UserQuestion from '@icons/user-question.svg';
+import { Home, User, Users, Doc, UserQuestion } from '@icons/index';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '@store/store';
 import { useSelector } from 'react-redux';
@@ -80,7 +76,7 @@ export const SiderApp = () => {
         navigate('/users');
         break;
       default:
-        console.log('unknown key', key);
+        return;
     }
   };
 

@@ -1,6 +1,6 @@
-import { Pagination } from 'antd';
 import styles from './home-page.module.scss';
-import Logo from '@icons/code.svg';
+import { Pagination } from 'antd';
+import { Code } from '@icons/index';
 import { Snippet } from '@organisms/Snippet/Snippet';
 import { useEffect } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
@@ -28,7 +28,7 @@ export const HomePage = () => {
     <div className={styles.home}>
       <h1>{'Welcome to Codelang!'}</h1>
       <div>
-        <Logo className={styles.icon} />
+        <Code className={styles.icon} />
       </div>
       {loading ? (
         <SpinApp />

@@ -1,8 +1,6 @@
 import { Button, Card, Avatar, Modal } from 'antd';
 import styles from './account-page.module.scss';
-import User from '@icons/user.svg';
-import Logout from '@icons/logout.svg';
-import Trash from '@icons/trash.svg';
+import { User, Logout, Trash } from '@icons/index';
 import { useNavigate } from 'react-router-dom';
 import { UserNameChangeForm } from '@molecules/UserNameChangeForm/UserNameChangeForm';
 import { PasswordChangeForm } from '@molecules/PasswordChangeForm/PasswordChangeForm';
