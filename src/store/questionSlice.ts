@@ -22,17 +22,25 @@ export interface UserProps {
   role: string;
 }
 
+export interface CreateQuestionPayload {
+  title: string;
+  description: string;
+  attachedCode?: string;
+}
+
 interface QuestionState {
   questions: QuestionProps[];
   loading: boolean;
   error: string | null;
   totalItems: number;
+  success: boolean;
 }
 
 const initialState: QuestionState = {
   questions: [],
   loading: false,
   error: null,
+  success: false,
   totalItems: 1,
 };
 
@@ -44,6 +52,18 @@ export const fetchQuestions = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Registration error');
+    }
+  }
+);
+
+export const createQuestion = createAsyncThunk(
+  'questions/crateQuestion',
+  async (payload: CreateQuestionPayload, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/questions`, payload);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Create question error');
     }
   }
 );
@@ -68,10 +88,24 @@ const questionSlice = createSlice({
         state.loading = false;
         state.error =
           (action.payload as string) || action.error.message || 'Failed to load questions';
+      })
+      // createQuestion
+      .addCase(createQuestion.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(createQuestion.fulfilled, (state) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(createQuestion.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to create question';
+        state.success = null;
       });
   },
 });
-
-// export const { login, logout } = authSlice.actions;
 
 export default questionSlice.reducer;

@@ -3,6 +3,7 @@ import { ErrorBoundary } from '@organisms/ErrorBoundary/ErrorBoundary';
 import { AccountPage } from '@pages/AccountPage/AccountPage';
 import { AuthPage } from '@pages/AuthPage/AuthPage';
 import { ChangeSnippetPage } from '@pages/ChangeSnippetPage/ChangeSnippetPage';
+import { CreateQuestionPage } from '@pages/CreateQuesionPage/CreateQuestionPage';
 import { HomePage } from '@pages/HomePage/HomePage';
 import { MySnippetsPage } from '@pages/MySnippetsPage/MySnippetsPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
@@ -86,6 +87,14 @@ export const router = createBrowserRouter([
         element: (
           // <ProtectedRoute>
           <QuestionsPage />
+          // </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/askquestion',
+        element: (
+          // <ProtectedRoute>
+          <CreateQuestionPage />
           // </ProtectedRoute>
         ),
       },

@@ -12,3 +12,7 @@
 .ant-list-item-meta-description {
   overflow-wrap: break-word;
 }
+
+.ant-input {
+  @include fonts.courier-prime;
+}

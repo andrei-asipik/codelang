@@ -13,9 +13,13 @@ export const HeaderApp = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const logout = async () => {
+  const logout = () => {
     dispatch(logoutUser());
     navigate('/auth');
+  };
+
+  const askClick = () => {
+    navigate('/askquestion');
   };
 
   return (
@@ -27,6 +31,9 @@ export const HeaderApp = () => {
         <span>CODELANG</span>
       </div>
       <div className={styles.right}>
+        <Button className={styles.button} onClick={askClick}>
+          Ask question
+        </Button>
         {isAuthenticated ? (
           <Button className={styles.button} onClick={logout}>
             Sign Out

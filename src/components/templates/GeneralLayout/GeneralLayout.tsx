@@ -14,10 +14,14 @@ export const GeneralLayout = () => {
     (state: RootState) => state.snippets
   );
   const { error: authError } = useSelector((state: RootState) => state.auth);
+  const { success: questionSuccess, error: questionError } = useSelector(
+    (state: RootState) => state.questions
+  );
 
   useNotifications(userSuccess, userError);
   useNotifications(undefined, authError);
   useNotifications(snippetSuccess, snippetError);
+  useNotifications(questionSuccess, questionError);
 
   return (
     <Layout className={styles.mainContainer}>

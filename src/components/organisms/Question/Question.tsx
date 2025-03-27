@@ -1,6 +1,6 @@
 import styles from './question.module.scss';
 import UserQuestion from '@icons/user-question.svg';
-
+import Eye from '@icons/eye.svg';
 // import { useNavigate } from 'react-router';
 import { QuestionProps } from '@store/questionSlice';
 import { Button } from 'antd';
@@ -9,11 +9,14 @@ interface QuestionComponentProps {
   question: QuestionProps;
 }
 
-const onClick = () => {
-  console.log('click');
-};
-
 export const Question = ({ question }: QuestionComponentProps) => {
+  // const navigate = useNavigate();
+
+  const onClick = () => {
+    // navigate('/')
+    console.log('click');
+  };
+
   return (
     <div className={styles.question}>
       <div className={styles.header}>
@@ -30,7 +33,7 @@ export const Question = ({ question }: QuestionComponentProps) => {
       <Button
         shape="circle"
         type="text"
-        icon={<UserQuestion className={styles.icon} />}
+        icon={<Eye className={styles.icon} />}
         onClick={onClick}
         className={styles.button}
       />
