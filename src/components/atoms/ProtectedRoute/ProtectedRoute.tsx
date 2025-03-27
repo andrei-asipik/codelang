@@ -5,5 +5,5 @@ import { Navigate } from 'react-router-dom';
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/auth" />;
+  return isAuthenticated ? children : <Navigate to="/auth" replace />;
 };

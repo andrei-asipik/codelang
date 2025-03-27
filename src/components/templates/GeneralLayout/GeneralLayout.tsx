@@ -4,11 +4,19 @@ import { Content } from 'antd/es/layout/layout';
 import styles from './general-layout.module.scss';
 import { HeaderApp } from '@organisms/HeaderApp/HeaderApp';
 import { SiderApp } from '@organisms/SiderApp/Sider';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/store';
 import { useNotifications } from '@hooks/useNotifications';
+import { useEffect } from 'react';
+import { checkAuth } from '@store/authSlice';
 
 export const GeneralLayout = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   const { success: userSuccess, error: userError } = useSelector((state: RootState) => state.user);
   const { success: snippetSuccess, error: snippetError } = useSelector(
     (state: RootState) => state.snippets
