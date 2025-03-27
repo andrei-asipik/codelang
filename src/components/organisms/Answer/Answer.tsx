@@ -1,11 +1,13 @@
 import { Button, List } from 'antd';
 import styles from './answer.module.scss';
-import User from '@icons/user.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { AnswerProps, deleteAnswer } from '@store/questionSlice';
+import { useNavigate } from 'react-router-dom';
+import { Counter } from '@atoms/Counter/Counter';
 
 export const Answer = ({ answer }: { answer: AnswerProps }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user.user);
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -17,6 +19,21 @@ export const Answer = ({ answer }: { answer: AnswerProps }) => {
   };
 
   const canDelete = answer.user.id == String(userId);
+
+  const handleMarkClick = (mark: string) => {
+    const payload = {
+      answerId: answer.id,
+      mark: mark,
+    };
+    if (isAuthenticated) {
+      console.log('answerId:', payload.answerId, 'mark:', payload.mark);
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  const handleMoreClick = () => handleMarkClick('correct');
+  const handleLessClick = () => handleMarkClick('incorrect');
 
   return (
     <List.Item
@@ -33,8 +50,8 @@ export const Answer = ({ answer }: { answer: AnswerProps }) => {
       }
     >
       <List.Item.Meta
-        avatar={<User className={styles.icon} />}
-        title={<strong>{answer.user.username}</strong>}
+        avatar={<Counter count={0} onIncrement={handleMoreClick} onDecrement={handleLessClick} />}
+        title={<b>{answer.user.username}</b>}
         description={answer.content}
       />
     </List.Item>
