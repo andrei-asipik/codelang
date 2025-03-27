@@ -70,7 +70,7 @@ export const PostPage = () => {
               placeholder="Write comment..."
               required
             />
-            <Button onClick={submitComment} type="primary" style={{ marginTop: 10 }}>
+            <Button onClick={submitComment} type="primary" className={styles.button}>
               Add comment
             </Button>
             <Divider />

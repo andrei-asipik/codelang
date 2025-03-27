@@ -19,7 +19,11 @@ export const HeaderApp = () => {
   };
 
   const askClick = () => {
-    navigate('/askquestion');
+    if (isAuthenticated) {
+      navigate('/askquestion');
+    } else {
+      navigate('/auth');
+    }
   };
 
   return (
@@ -41,7 +45,7 @@ export const HeaderApp = () => {
         ) : (
           <Button href="/auth">Sign In</Button>
         )}
-        <Button type="text" className={styles.textBtn}>
+        <Button type="text" disabled className={styles.textBtn}>
           <Language />
           EN
         </Button>

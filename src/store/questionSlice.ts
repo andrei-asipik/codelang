@@ -14,6 +14,7 @@ export interface AnswerProps {
   id: string;
   content: string;
   isCorrect: boolean;
+  user: UserProps;
 }
 
 export interface UserProps {
@@ -27,6 +28,10 @@ export interface CreateQuestionPayload {
   description: string;
   attachedCode?: string;
 }
+export interface AddAnswerPayload {
+  questionId: string;
+  content: string;
+}
 
 interface QuestionState {
   questions: QuestionProps[];
@@ -34,6 +39,8 @@ interface QuestionState {
   error: string | null;
   totalItems: number;
   success: boolean;
+  currentQuestion: QuestionProps | null;
+  answerLoading: boolean;
 }
 
 const initialState: QuestionState = {
@@ -42,6 +49,8 @@ const initialState: QuestionState = {
   error: null,
   success: false,
   totalItems: 1,
+  currentQuestion: null,
+  answerLoading: false,
 };
 
 export const fetchQuestions = createAsyncThunk(
@@ -64,6 +73,42 @@ export const createQuestion = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Create question error');
+    }
+  }
+);
+
+export const fetchQuestionById = createAsyncThunk(
+  'questions/fetchQuestionById',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/questions/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to load question');
+    }
+  }
+);
+
+export const deleteAnswer = createAsyncThunk(
+  'questions/deleteAnswer',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/answers/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete answer');
+    }
+  }
+);
+
+export const addAnswer = createAsyncThunk(
+  'questions/addAnswer',
+  async (payload: AddAnswerPayload, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/answers`, payload);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to add answer');
     }
   }
 );
@@ -104,6 +149,53 @@ const questionSlice = createSlice({
         state.error =
           (action.payload as string) || action.error.message || 'Failed to create question';
         state.success = null;
+      })
+      // fetchQuestionById
+      .addCase(fetchQuestionById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchQuestionById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentQuestion = action.payload;
+      })
+      .addCase(fetchQuestionById.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to load question';
+      })
+      // deleteAnswer
+      .addCase(deleteAnswer.pending, (state) => {
+        state.answerLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteAnswer.fulfilled, (state, action) => {
+        state.answerLoading = false;
+        if (state.currentQuestion && state.currentQuestion.id === action.payload.questionId) {
+          state.currentQuestion.answers = state.currentQuestion.answers.filter(
+            (answer) => answer.id !== action.payload.answerId
+          );
+        }
+      })
+      .addCase(deleteAnswer.rejected, (state, action) => {
+        state.answerLoading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to remove answer';
+      })
+      // addAnswer
+      .addCase(addAnswer.pending, (state) => {
+        state.answerLoading = true;
+        state.error = null;
+      })
+      .addCase(addAnswer.fulfilled, (state, action) => {
+        state.answerLoading = false;
+        if (state.currentQuestion && state.currentQuestion.id === action.meta.arg.questionId) {
+          state.currentQuestion.answers.push(action.payload);
+        }
+      })
+      .addCase(addAnswer.rejected, (state, action) => {
+        state.answerLoading = false;
+        state.error = (action.payload as string) || action.error.message || 'Failed to add answer';
       });
   },
 });

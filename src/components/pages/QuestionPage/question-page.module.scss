@@ -1,17 +1,17 @@
 @use '@styles/colors.scss' as color;
 
-.home {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 16px;
 
-  .snippet {
+  .question {
     margin-top: 16px;
   }
 }
 
-.comment {
+.answer {
   background: color.$white;
   padding: 10px;
   border-radius: 8px;

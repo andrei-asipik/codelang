@@ -9,6 +9,7 @@ import { MySnippetsPage } from '@pages/MySnippetsPage/MySnippetsPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { PostPage } from '@pages/PostPage/PostPage';
 import { PostSnippetPage } from '@pages/PostSnippetPage/PostSnippetPage';
+import { QuestionPage } from '@pages/QuestionPage/QuestionPage';
 import { QuestionsPage } from '@pages/QuestionsPage/QuestionsPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
 import { UserPage } from '@pages/UserPage/UserPage';
@@ -69,33 +70,33 @@ export const router = createBrowserRouter([
       {
         path: '/users',
         element: (
-          // <ProtectedRoute>
-          <UsersPage />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <UsersPage />
+          </ProtectedRoute>
         ),
       },
       {
         path: '/user/:id',
         element: (
-          // <ProtectedRoute>
-          <UserPage />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <UserPage />
+          </ProtectedRoute>
         ),
       },
       {
         path: '/questions',
-        element: (
-          // <ProtectedRoute>
-          <QuestionsPage />
-          // </ProtectedRoute>
-        ),
+        element: <QuestionsPage />,
+      },
+      {
+        path: '/question/:id',
+        element: <QuestionPage />,
       },
       {
         path: '/askquestion',
         element: (
-          // <ProtectedRoute>
-          <CreateQuestionPage />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <CreateQuestionPage />
+          </ProtectedRoute>
         ),
       },
       {
