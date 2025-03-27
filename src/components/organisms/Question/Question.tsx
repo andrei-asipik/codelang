@@ -25,7 +25,7 @@ export const Question = ({ question, withCode }: QuestionComponentProps) => {
         <div className={styles.info}>
           <h2>{question.title}</h2>
           <span>
-            asked by user: <strong>{question.user.username}</strong>
+            asked by user: <b>{question.user.username}</b>
           </span>
         </div>
       </div>

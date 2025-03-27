@@ -54,7 +54,7 @@ export const UserPage = () => {
         <ul className={styles.statistics}>
           {statistics.map(({ label, value }) => (
             <li key={label}>
-              <strong>{label}:</strong> {value}
+              <b>{label}:</b> {value}
             </li>
           ))}
         </ul>

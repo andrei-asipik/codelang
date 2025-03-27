@@ -32,7 +32,7 @@ export const Comment = ({ comment, snippetId }: { comment: CommentProps; snippet
     >
       <List.Item.Meta
         avatar={<User className={styles.icon} />}
-        title={<strong>{comment.user.username}</strong>}
+        title={<b>{comment.user.username}</b>}
         description={comment.content}
       />
     </List.Item>
