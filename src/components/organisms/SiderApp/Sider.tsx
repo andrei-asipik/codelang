@@ -2,7 +2,7 @@ import { Avatar, Menu, MenuProps } from 'antd';
 import styles from './sider.module.scss';
 import Sider from 'antd/es/layout/Sider';
 import { Home, User, Users, Doc, UserQuestion } from '@icons/index';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '@store/store';
 import { useSelector } from 'react-redux';
 
@@ -18,7 +18,7 @@ const items: MenuItem[] = [
     icon: <Home className={styles.icon} />,
   },
   {
-    key: 'myaccount',
+    key: 'account',
     label: 'My Account',
     icon: <User className={styles.icon} />,
   },
@@ -28,7 +28,7 @@ const items: MenuItem[] = [
     icon: <Doc className={styles.icon} />,
   },
   {
-    key: 'mysnippet',
+    key: 'mysnippets',
     label: 'My snippets',
     icon: <Doc className={styles.icon} />,
   },
@@ -51,33 +51,12 @@ export const SiderApp = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const username = isAuthenticated ? user?.username : 'Guest';
 
   const onClick: MenuProps['onClick'] = (e) => {
-    const key = e.key;
-    switch (key) {
-      case 'home':
-        navigate('/');
-        break;
-      case 'myaccount':
-        navigate('/account');
-        break;
-      case 'postsnippet':
-        navigate('/postsnippet');
-        break;
-      case 'mysnippet':
-        navigate('/mysnippets');
-        break;
-      case 'questions':
-        navigate('/questions');
-        break;
-      case 'users':
-        navigate('/users');
-        break;
-      default:
-        return;
-    }
+    navigate(e.key);
   };
 
   return (
@@ -86,7 +65,12 @@ export const SiderApp = () => {
         <Avatar size="large" icon={<User />} />
         <span>{username}</span>
       </div>
-      <Menu onClick={onClick} items={items} className={styles.menu} defaultActiveFirst />
+      <Menu
+        onClick={onClick}
+        items={items}
+        className={styles.menu}
+        selectedKeys={[location.pathname.slice(1)]}
+      />
     </Sider>
   );
 };

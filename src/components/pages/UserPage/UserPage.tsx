@@ -6,19 +6,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@store/store';
 import { useEffect } from 'react';
 import { SpinApp } from '@atoms/SpinApp/SpinApp';
-import { fetchUserStatistic } from '@store/userSlice';
+import { fetchUserStatisticById } from '@store/userSlice';
 
 export const UserPage = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { id } = useParams();
 
-  const { user, loading } = useSelector((state: RootState) => state.user);
-  const { username, role, statistic } = user || {};
+  const { checkedUser, loading } = useSelector((state: RootState) => state.user);
+  const { username, role, statistic } = checkedUser || {};
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchUserStatistic(Number(id)));
+      dispatch(fetchUserStatisticById(Number(id)));
     }
   }, [dispatch, id]);
 
@@ -35,7 +35,7 @@ export const UserPage = () => {
       ]
     : [];
 
-  return loading || !user ? (
+  return loading || !checkedUser ? (
     <SpinApp />
   ) : (
     <div className={styles.container}>

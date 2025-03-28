@@ -26,6 +26,7 @@ interface UserState {
   success?: boolean;
   users: User[];
   totalItems: number;
+  checkedUser: User | null;
 }
 
 const initialState: UserState = {
@@ -35,6 +36,7 @@ const initialState: UserState = {
   success: false,
   users: [],
   totalItems: 1,
+  checkedUser: null,
 };
 
 export interface UpdateNameData {
@@ -99,6 +101,17 @@ export const fetchUsers = createAsyncThunk(
     }
   }
 );
+export const fetchUserStatisticById = createAsyncThunk(
+  'user/fetchUserStatisticById',
+  async (userId: number, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/users/${userId}/statistic`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to load user statistics');
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -126,6 +139,20 @@ const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchUserStatistic.rejected, (state, action) => {
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to load user statistics';
+        state.loading = false;
+      })
+      // fetchUserStatisticById
+      .addCase(fetchUserStatisticById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserStatisticById.fulfilled, (state, action: PayloadAction<User>) => {
+        state.checkedUser = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchUserStatisticById.rejected, (state, action) => {
         state.error =
           (action.payload as string) || action.error.message || 'Failed to load user statistics';
         state.loading = false;
@@ -175,7 +202,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.success = false;
       })
-      // fetchSnippets
+      // fetchUsers
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
         state.error = null;
