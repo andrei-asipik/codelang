@@ -28,6 +28,10 @@ export interface CreateQuestionPayload {
   description: string;
   attachedCode?: string;
 }
+export interface ChangeQuestionPayload {
+  payload: CreateQuestionPayload;
+  questionId: string;
+}
 export interface AddAnswerPayload {
   questionId: string;
   content: string;
@@ -77,6 +81,18 @@ export const createQuestion = createAsyncThunk(
   }
 );
 
+export const deleteQuestion = createAsyncThunk(
+  'questions/deleteQuestion',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/questions/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete question');
+    }
+  }
+);
+
 export const fetchQuestionById = createAsyncThunk(
   'questions/fetchQuestionById',
   async (id: string, { rejectWithValue }) => {
@@ -109,6 +125,17 @@ export const addAnswer = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to add answer');
+    }
+  }
+);
+export const changeQuestion = createAsyncThunk(
+  'questions/changeQuestion',
+  async ({ payload, questionId }: ChangeQuestionPayload, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`/questions/${questionId}`, payload);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update question');
     }
   }
 );
@@ -149,6 +176,23 @@ const questionSlice = createSlice({
         state.error =
           (action.payload as string) || action.error.message || 'Failed to create question';
         state.success = null;
+      })
+      // deleteQuestion
+      .addCase(deleteQuestion.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteQuestion.fulfilled, (state, action) => {
+        state.loading = false;
+        state.questions = state.questions.filter((question) => question.id !== action.payload);
+        if (state.currentQuestion && state.currentQuestion.id === action.payload) {
+          state.currentQuestion = null;
+        }
+      })
+      .addCase(deleteQuestion.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to remove answer';
       })
       // fetchQuestionById
       .addCase(fetchQuestionById.pending, (state) => {
@@ -196,6 +240,29 @@ const questionSlice = createSlice({
       .addCase(addAnswer.rejected, (state, action) => {
         state.answerLoading = false;
         state.error = (action.payload as string) || action.error.message || 'Failed to add answer';
+      })
+      // changeQuestion
+      .addCase(changeQuestion.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(changeQuestion.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        if (state.currentQuestion && state.currentQuestion.id === action.payload.id) {
+          state.currentQuestion = action.payload;
+        }
+        const index = state.questions.findIndex((s) => s.id === action.payload.id);
+        if (index !== -1) {
+          state.questions[index] = action.payload;
+        }
+      })
+      .addCase(changeQuestion.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || action.error.message || 'Failed to update question';
+        state.success = false;
       });
   },
 });

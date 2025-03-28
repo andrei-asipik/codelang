@@ -16,6 +16,7 @@ import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
 import { UserPage } from '@pages/UserPage/UserPage';
 import { UsersPage } from '@pages/UsersPage/UsersPage';
 import { GeneralLayout } from '@templates/GeneralLayout/GeneralLayout';
+import { ChangeQuestionPage } from '@pages/ChangeQuestionPage/ChangeQuestionPage';
 
 const protectedRoutes = [
   { path: '/post/:id', element: <PostPage /> },
@@ -23,6 +24,7 @@ const protectedRoutes = [
   { path: '/postsnippet', element: <PostSnippetPage /> },
   { path: '/mysnippets', element: <MySnippetsPage /> },
   { path: '/changesnippet/:id', element: <ChangeSnippetPage /> },
+  { path: '/changequestion/:id', element: <ChangeQuestionPage /> },
   { path: '/users', element: <UsersPage /> },
   { path: '/user/:id', element: <UserPage /> },
   { path: '/askquestion', element: <CreateQuestionPage /> },

@@ -18,16 +18,23 @@
 
     .info {
       display: flex;
-      flex-direction: column;
       align-items: start;
+      justify-content: space-between;
+      width: 100%;
 
       h2 {
         margin: 8px 0;
       }
+
       span {
         color: color.$text-color-gray;
       }
+
+      .button {
+        color: color.$primary-color;
+      }
     }
+
     .icon {
       width: 40px;
       height: 40px;
@@ -45,11 +52,17 @@
   .button {
     margin-left: 12px;
     color: color.$primary-color;
+    display: flex;
+    flex-direction: column;
 
     .icon {
       width: 20px;
       height: 20px;
     }
+  }
+
+  .button span {
+    color: color.$primary-color !important;
   }
 
   .code {
