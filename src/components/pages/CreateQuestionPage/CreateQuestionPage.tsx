@@ -1,10 +1,9 @@
 import { Button, Divider, Input } from 'antd';
 import styles from './create-question-page.module.scss';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@store/store';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ChangeEvent, useState } from 'react';
-import { createQuestion } from '@store/questionSlice';
+import { AppDispatch, createQuestion } from '@store';
 
 export const CreateQuestionPage = () => {
   const dispatch = useDispatch<AppDispatch>();

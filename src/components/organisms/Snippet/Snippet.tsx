@@ -1,11 +1,10 @@
 import styles from './snippet.module.scss';
-import { User, Programming, Like, Dislike, Comment } from '@icons/index';
+import { User, Programming, Like, Dislike, Comment } from '@icons';
 import { Button } from 'antd';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 import { useNavigate } from 'react-router';
-import { addSnippetMark, deleteSnippet, Mark, SnippetProps } from '@store/snippetSlice';
+import { AppDispatch, RootState, addSnippetMark, deleteSnippet, Mark, SnippetProps } from '@store';
 
 interface SnippetComponentProps {
   snippet: SnippetProps;

@@ -1,12 +1,11 @@
 import { Card, Avatar } from 'antd';
 import styles from './user-page.module.scss';
-import { User } from '@icons/index';
+import { User } from '@icons';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
-import { fetchUserStatisticById } from '@store/userSlice';
+import { SpinApp } from '@atoms';
+import { fetchUserStatisticById, AppDispatch, RootState } from '@store';
 
 export const UserPage = () => {
   const dispatch = useDispatch<AppDispatch>();

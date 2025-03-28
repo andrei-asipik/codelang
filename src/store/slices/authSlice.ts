@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { clearUser, setUser } from './userSlice';
-import { api } from '@services/api';
+import { clearUser, setUser } from '@store';
+import { api } from '@services';
 
 interface AuthState {
   isAuthenticated: boolean;

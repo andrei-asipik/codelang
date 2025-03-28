@@ -1,9 +1,9 @@
 import { Avatar, Menu, MenuProps } from 'antd';
 import styles from './sider.module.scss';
 import Sider from 'antd/es/layout/Sider';
-import { Home, User, Users, Doc, UserQuestion } from '@icons/index';
+import { Home, User, Users, Doc, UserQuestion } from '@icons';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RootState } from '@store/store';
+import { RootState } from '@store';
 import { useSelector } from 'react-redux';
 
 type MenuItem = Required<MenuProps>['items'][number];

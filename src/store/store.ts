@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '@store/authSlice';
-import userReducer from '@store/userSlice';
-import snippetReducer from '@store/snippetSlice';
-import questionReducer from '@store/questionSlice';
+import authReducer from './slices/authSlice';
+import userReducer from './slices/userSlice';
+import snippetReducer from './slices/snippetSlice';
+import questionReducer from './slices/questionSlice';
 
 export const store = configureStore({
   reducer: {

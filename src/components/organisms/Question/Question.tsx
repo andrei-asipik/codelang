@@ -1,11 +1,10 @@
 import styles from './question.module.scss';
-import { UserQuestion, Eye } from '@icons/index';
+import { UserQuestion, Eye } from '@icons';
 import { useNavigate } from 'react-router';
-import { deleteQuestion, QuestionProps } from '@store/questionSlice';
 import { Button } from 'antd';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
+import { deleteQuestion, QuestionProps, AppDispatch, RootState } from '@store';
 
 interface QuestionComponentProps {
   question: QuestionProps;

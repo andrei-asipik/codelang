@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import styles from './counter.module.scss';
-import { Less } from '@icons/index';
+import { Less } from '@icons';
 
 interface CounterProps {
   count: number;

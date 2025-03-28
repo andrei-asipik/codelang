@@ -1,9 +1,8 @@
 import { Button, List } from 'antd';
 import styles from './comment.module.scss';
-import User from '@icons/user.svg';
-import { CommentProps, deleteComment } from '@store/snippetSlice';
+import { User } from '@icons';
+import { CommentProps, deleteComment, AppDispatch, RootState } from '@store';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 
 export const Comment = ({ comment, snippetId }: { comment: CommentProps; snippetId: string }) => {
   const dispatch = useDispatch<AppDispatch>();

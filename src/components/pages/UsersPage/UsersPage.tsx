@@ -1,10 +1,9 @@
 import styles from './users-page.module.scss';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { SpinApp } from '@atoms';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { fetchUsers } from '@store/userSlice';
-import { UsersTable } from '@molecules/UsersTable/UsersTable';
+import { fetchUsers, AppDispatch, RootState } from '@store';
+import { UsersTable } from '@molecules';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Pagination } from 'antd';
 

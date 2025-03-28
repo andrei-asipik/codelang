@@ -2,9 +2,8 @@ import { Input, Button, Form } from 'antd';
 import styles from './register-page.module.scss';
 import { Rule } from 'antd/es/form';
 import { useNavigate } from 'react-router-dom';
-import { RegisterData, registerUser } from '@store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
+import { RegisterData, registerUser, AppDispatch, RootState } from '@store';
 import { useEffect } from 'react';
 
 export const RegisterPage = () => {

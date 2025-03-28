@@ -2,8 +2,7 @@ import { Input, Button, Form } from 'antd';
 import styles from './auth-page.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { loginUser, RegisterData } from '@store/authSlice';
+import { AppDispatch, RootState, loginUser, RegisterData } from '@store';
 import { useEffect } from 'react';
 
 export const AuthPage = () => {

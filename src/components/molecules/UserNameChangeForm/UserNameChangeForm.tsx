@@ -1,8 +1,7 @@
 import { Input, Button, Form } from 'antd';
 import styles from './username-change-form.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { UpdateNameData, updateUserName } from '@store/userSlice';
+import { AppDispatch, RootState, UpdateNameData, updateUserName } from '@store';
 
 export const UserNameChangeForm = () => {
   const dispatch = useDispatch<AppDispatch>();

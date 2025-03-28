@@ -1,15 +1,12 @@
 import { Button, Card, Avatar, Modal } from 'antd';
 import styles from './account-page.module.scss';
-import { User, Logout, Trash } from '@icons/index';
+import { User, Logout, Trash } from '@icons';
 import { useNavigate } from 'react-router-dom';
-import { UserNameChangeForm } from '@molecules/UserNameChangeForm/UserNameChangeForm';
-import { PasswordChangeForm } from '@molecules/PasswordChangeForm/PasswordChangeForm';
+import { UserNameChangeForm, PasswordChangeForm } from '@molecules';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
-import { deleteUser, fetchUserStatistic } from '@store/userSlice';
-import { logoutUser } from '@store/authSlice';
+import { SpinApp } from '@atoms';
+import { AppDispatch, RootState, deleteUser, fetchUserStatistic, logoutUser } from '@store';
 
 export const AccountPage = () => {
   const navigate = useNavigate();

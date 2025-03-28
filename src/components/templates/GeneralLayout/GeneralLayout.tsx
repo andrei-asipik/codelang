@@ -2,13 +2,12 @@ import { Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import styles from './general-layout.module.scss';
-import { HeaderApp } from '@organisms/HeaderApp/HeaderApp';
-import { SiderApp } from '@organisms/SiderApp/Sider';
+import { HeaderApp, SiderApp } from '@organisms';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { useNotifications } from '@hooks/useNotifications';
+import { AppDispatch, RootState } from '@store';
+import { useNotifications } from '@hooks';
 import { useEffect } from 'react';
-import { checkAuth } from '@store/authSlice';
+import { checkAuth } from '@store';
 
 export const GeneralLayout = () => {
   const dispatch = useDispatch<AppDispatch>();

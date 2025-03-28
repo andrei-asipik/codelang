@@ -1,11 +1,10 @@
 import { Pagination } from 'antd';
 import styles from './my-snippets-page.module.scss';
-import { Snippet } from '@organisms/Snippet/Snippet';
+import { Snippet } from '@organisms';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { SpinApp } from '@atoms';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { fetchSnippetsOfUser, SnippetProps } from '@store/snippetSlice';
+import { AppDispatch, RootState, fetchSnippetsOfUser, SnippetProps } from '@store';
 import { useSearchParams } from 'react-router-dom';
 
 export const MySnippetsPage = () => {

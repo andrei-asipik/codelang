@@ -1,14 +1,11 @@
 import { Button, Divider, Input, List } from 'antd';
 import styles from './post-page.module.scss';
-import { Snippet } from '@organisms/Snippet/Snippet';
+import { Snippet, Comment } from '@organisms';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { SpinApp } from '@atoms';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { Comment } from '@organisms/Comment/Comment';
-import { CommentProps, fetchSnippetById } from '@store/snippetSlice';
-import { addComment } from '@store/snippetSlice';
+import { AppDispatch, RootState, CommentProps, fetchSnippetById, addComment } from '@store';
 
 export const PostPage = () => {
   const dispatch = useDispatch<AppDispatch>();

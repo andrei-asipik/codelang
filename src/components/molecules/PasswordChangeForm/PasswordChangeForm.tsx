@@ -2,8 +2,7 @@ import { Input, Button, Form } from 'antd';
 import styles from './password-change-form.module.scss';
 import { Rule } from 'antd/es/form';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { clearError, updatePassword, UpdatePasswordData } from '@store/userSlice';
+import { AppDispatch, RootState, clearError, updatePassword, UpdatePasswordData } from '@store';
 
 export const PasswordChangeForm = () => {
   const dispatch = useDispatch<AppDispatch>();

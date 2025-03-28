@@ -1,10 +1,9 @@
 import { Button, Divider, Select } from 'antd';
 import styles from './post-snippet-page.module.scss';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@store/store';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ChangeEvent, useState } from 'react';
-import { createSnippet } from '@store/snippetSlice';
+import { AppDispatch, createSnippet } from '@store';
 
 export const PostSnippetPage = () => {
   const dispatch = useDispatch<AppDispatch>();

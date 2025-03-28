@@ -1,12 +1,11 @@
 import styles from './questions-page.module.scss';
 import { Pagination } from 'antd';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { SpinApp } from '@atoms';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 import { useSearchParams } from 'react-router-dom';
-import { fetchQuestions, QuestionProps } from '@store/questionSlice';
-import { Question } from '@organisms/Question/Question';
+import { fetchQuestions, QuestionProps, AppDispatch, RootState } from '@store';
+import { Question } from '@organisms';
 
 export const QuestionsPage = () => {
   const dispatch = useDispatch<AppDispatch>();

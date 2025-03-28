@@ -1,13 +1,11 @@
 import { Button, Divider, Input, List } from 'antd';
 import styles from './question-page.module.scss';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { SpinApp } from '@atoms';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { Question } from '@organisms/Question/Question';
-import { addAnswer, AnswerProps, fetchQuestionById } from '@store/questionSlice';
-import { Answer } from '@organisms/Answer/Answer';
+import { AppDispatch, RootState, addAnswer, AnswerProps, fetchQuestionById } from '@store';
+import { Question, Answer } from '@organisms';
 
 export const QuestionPage = () => {
   const dispatch = useDispatch<AppDispatch>();

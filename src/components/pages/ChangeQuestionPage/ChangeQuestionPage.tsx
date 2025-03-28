@@ -1,11 +1,10 @@
 import { Button, Divider, Input } from 'antd';
 import styles from './change-question-page.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { changeQuestion, fetchQuestionById } from '@store/questionSlice';
+import { AppDispatch, RootState, changeQuestion, fetchQuestionById } from '@store';
 
 export const ChangeQuestionPage = () => {
   const dispatch = useDispatch<AppDispatch>();

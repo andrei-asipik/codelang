@@ -1,12 +1,11 @@
 import styles from './home-page.module.scss';
 import { Pagination } from 'antd';
-import { Code } from '@icons/index';
-import { Snippet } from '@organisms/Snippet/Snippet';
+import { Code } from '@icons';
+import { Snippet } from '@organisms';
 import { useEffect } from 'react';
-import { SpinApp } from '@atoms/SpinApp/SpinApp';
+import { SpinApp } from '@atoms';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
-import { fetchSnippets, SnippetProps } from '@store/snippetSlice';
+import { AppDispatch, RootState, fetchSnippets, SnippetProps } from '@store';
 import { useSearchParams } from 'react-router-dom';
 
 export const HomePage = () => {

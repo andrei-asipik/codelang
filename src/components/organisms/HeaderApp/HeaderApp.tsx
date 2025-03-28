@@ -1,11 +1,10 @@
 import { Header } from 'antd/es/layout/layout';
 import styles from './header.module.scss';
 import { Button } from 'antd';
-import { Code, Language } from '@icons/index';
+import { Code, Language } from '@icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/store/store';
+import { AppDispatch, RootState, logoutUser } from '@store';
 import { useNavigate } from 'react-router-dom';
-import { logoutUser } from '@store/authSlice';
 
 export const HeaderApp = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);

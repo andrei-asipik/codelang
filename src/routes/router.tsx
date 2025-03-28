@@ -1,22 +1,22 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { ProtectedRoute } from '@atoms/ProtectedRoute/ProtectedRoute';
-import { ErrorBoundary } from '@organisms/ErrorBoundary/ErrorBoundary';
-import { AccountPage } from '@pages/AccountPage/AccountPage';
-import { AuthPage } from '@pages/AuthPage/AuthPage';
-import { ChangeSnippetPage } from '@pages/ChangeSnippetPage/ChangeSnippetPage';
-import { CreateQuestionPage } from '@pages/CreateQuestionPage/CreateQuestionPage';
-import { HomePage } from '@pages/HomePage/HomePage';
-import { MySnippetsPage } from '@pages/MySnippetsPage/MySnippetsPage';
-import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
-import { PostPage } from '@pages/PostPage/PostPage';
-import { PostSnippetPage } from '@pages/PostSnippetPage/PostSnippetPage';
-import { QuestionPage } from '@pages/QuestionPage/QuestionPage';
-import { QuestionsPage } from '@pages/QuestionsPage/QuestionsPage';
-import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
-import { UserPage } from '@pages/UserPage/UserPage';
-import { UsersPage } from '@pages/UsersPage/UsersPage';
-import { GeneralLayout } from '@templates/GeneralLayout/GeneralLayout';
-import { ChangeQuestionPage } from '@pages/ChangeQuestionPage/ChangeQuestionPage';
+import { ProtectedRoute } from '@atoms';
+import { ErrorBoundary } from '@organisms';
+import { AccountPage } from '@pages';
+import { AuthPage } from '@pages';
+import { ChangeSnippetPage } from '@pages';
+import { CreateQuestionPage } from '@pages';
+import { HomePage } from '@pages';
+import { MySnippetsPage } from '@pages';
+import { NotFoundPage } from '@pages';
+import { PostPage } from '@pages';
+import { PostSnippetPage } from '@pages';
+import { QuestionPage } from '@pages';
+import { QuestionsPage } from '@pages';
+import { RegisterPage } from '@pages';
+import { UserPage } from '@pages';
+import { UsersPage } from '@pages';
+import { GeneralLayout } from '@templates';
+import { ChangeQuestionPage } from '@pages';
 
 const protectedRoutes = [
   { path: '/post/:id', element: <PostPage /> },
@@ -28,6 +28,8 @@ const protectedRoutes = [
   { path: '/users', element: <UsersPage /> },
   { path: '/user/:id', element: <UserPage /> },
   { path: '/askquestion', element: <CreateQuestionPage /> },
+  { path: '/questions', element: <QuestionsPage /> },
+  { path: '/question/:id', element: <QuestionPage /> },
 ].map(({ path, element }) => ({
   path,
   element: <ProtectedRoute>{element}</ProtectedRoute>,
@@ -41,8 +43,6 @@ export const router = createBrowserRouter([
       { path: '/home', element: <HomePage /> },
       { path: '/register', element: <RegisterPage /> },
       { path: '/auth', element: <AuthPage /> },
-      { path: '/questions', element: <QuestionsPage /> },
-      { path: '/question/:id', element: <QuestionPage /> },
       ...protectedRoutes,
       { path: '/', element: <Navigate to="/home" replace /> },
       { path: '*', element: <Navigate to="/404" replace /> },

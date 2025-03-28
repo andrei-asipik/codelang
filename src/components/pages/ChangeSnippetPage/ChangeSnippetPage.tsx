@@ -1,10 +1,9 @@
 import { Button, Divider, Select } from 'antd';
 import styles from './change-snippet-page.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@store/store';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { changeSnippet, fetchSnippetById } from '@store/snippetSlice';
+import { AppDispatch, RootState, changeSnippet, fetchSnippetById } from '@store';
 import { useParams } from 'react-router-dom';
 
 export const ChangeSnippetPage = () => {
