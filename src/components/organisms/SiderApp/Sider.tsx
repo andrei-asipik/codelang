@@ -1,51 +1,12 @@
 import { Avatar, Menu, MenuProps } from 'antd';
 import styles from './sider.module.scss';
 import Sider from 'antd/es/layout/Sider';
-import { Home, User, Users, Doc, UserQuestion } from '@icons';
+import { User } from '@icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '@store';
 import { useSelector } from 'react-redux';
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-const items: MenuItem[] = [
-  {
-    type: 'divider',
-  },
-  {
-    key: 'home',
-    label: 'Home',
-    icon: <Home className={styles.icon} />,
-  },
-  {
-    key: 'account',
-    label: 'My Account',
-    icon: <User className={styles.icon} />,
-  },
-  {
-    key: 'postsnippet',
-    label: 'Post snippet',
-    icon: <Doc className={styles.icon} />,
-  },
-  {
-    key: 'mysnippets',
-    label: 'My snippets',
-    icon: <Doc className={styles.icon} />,
-  },
-  {
-    key: 'questions',
-    label: 'Questions',
-    icon: <UserQuestion className={styles.icon} />,
-  },
-  {
-    key: 'users',
-    label: 'Users',
-    icon: <Users className={styles.icon} />,
-  },
-  {
-    type: 'divider',
-  },
-];
+import { menuItems } from './sider.data';
+import { Icon } from '@atoms';
 
 export const SiderApp = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -56,6 +17,7 @@ export const SiderApp = () => {
   const username = isAuthenticated ? user?.username : 'Guest';
 
   const onClick: MenuProps['onClick'] = (e) => {
+    console.log(e);
     navigate(e.key);
   };
 
@@ -67,7 +29,11 @@ export const SiderApp = () => {
       </div>
       <Menu
         onClick={onClick}
-        items={items}
+        items={menuItems.map(({ key, label, icon }) => ({
+          key,
+          label,
+          icon: <Icon icon={icon} className={styles.icon} />,
+        }))}
         className={styles.menu}
         selectedKeys={[location.pathname.slice(1)]}
       />

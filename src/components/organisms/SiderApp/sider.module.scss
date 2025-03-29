@@ -21,6 +21,8 @@
 
     li {
       color: color.$text-color-white;
+      display: flex;
+      align-items: center;
 
       .icon {
         width: 20px;
