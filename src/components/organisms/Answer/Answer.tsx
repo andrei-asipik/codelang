@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, AnswerProps, deleteAnswer } from '@store';
 import { useNavigate } from 'react-router-dom';
 import { Counter } from '@atoms';
+import { useAuth } from '@hooks';
 
 export const Answer = ({ answer }: { answer: AnswerProps }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user.user);
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated } = useAuth();
 
   const userId = user?.id ?? '';
 

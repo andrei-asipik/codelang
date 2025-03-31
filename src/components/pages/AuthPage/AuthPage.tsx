@@ -1,14 +1,15 @@
 import { Input, Button, Form } from 'antd';
 import styles from './auth-page.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, loginUser, RegisterData } from '@store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, loginUser, RegisterData } from '@store';
 import { useEffect } from 'react';
+import { useAuth } from '@hooks';
 
 export const AuthPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useAuth();
 
   const onSubmit = async (values: RegisterData) => {
     await dispatch(loginUser(values));

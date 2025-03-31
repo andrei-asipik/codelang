@@ -2,14 +2,15 @@ import { Input, Button, Form } from 'antd';
 import styles from './register-page.module.scss';
 import { Rule } from 'antd/es/form';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RegisterData, registerUser, RootState } from '@store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, RegisterData, registerUser } from '@store';
 import { useEffect } from 'react';
+import { useAuth } from '@hooks';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useAuth();
 
   const onFinish = async (values: RegisterData) => {
     const userData = {

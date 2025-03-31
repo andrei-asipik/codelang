@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { SpinApp } from '@atoms';
 import { AppDispatch, RootState, deleteUser, fetchUserStatistic, logoutUser } from '@store';
+import { useAuth } from '@hooks';
 
 export const AccountPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated } = useAuth();
   const { user, loading } = useSelector((state: RootState) => state.user);
   const { username, role, id, statistic } = user || {};
 

@@ -7,9 +7,10 @@ import { RootState } from '@store';
 import { useSelector } from 'react-redux';
 import { menuItems } from './sider.data';
 import { Icon } from '@atoms';
+import { useAuth } from '@hooks';
 
 export const SiderApp = () => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated } = useAuth();
   const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
   const location = useLocation();

@@ -2,12 +2,13 @@ import { Header } from 'antd/es/layout/layout';
 import styles from './header.module.scss';
 import { Button } from 'antd';
 import { Code, Language } from '@icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, logoutUser } from '@store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, logoutUser } from '@store';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@hooks';
 
 export const HeaderApp = () => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 

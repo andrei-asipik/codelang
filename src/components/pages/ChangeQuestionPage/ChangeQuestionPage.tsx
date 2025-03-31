@@ -10,11 +10,11 @@ export const ChangeQuestionPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
   const { currentQuestion } = useSelector((state: RootState) => state.questions);
-  const [code, setCode] = useState('');
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-
-  const payload = { title: title, description: description, attachedCode: code };
+  const [questionData, setQuestionData] = useState({
+    title: '',
+    description: '',
+    attachedCode: '',
+  });
 
   useEffect(() => {
     if (id) {
@@ -24,43 +24,47 @@ export const ChangeQuestionPage = () => {
 
   useEffect(() => {
     if (currentQuestion) {
-      setTitle(currentQuestion.title);
-      setDescription(currentQuestion.description);
-      setCode(currentQuestion.attachedCode);
+      setQuestionData({
+        title: currentQuestion.title,
+        description: currentQuestion.description,
+        attachedCode: currentQuestion.attachedCode,
+      });
     }
   }, [currentQuestion]);
 
   const submitCode = () => {
-    dispatch(changeQuestion({ payload, questionId: id }));
+    if (!id) return;
+    dispatch(changeQuestion({ payload: questionData, questionId: id }));
   };
 
-  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
-  };
-
-  const handleCodeChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setCode(event.target.value);
-  };
+  const handleChange =
+    (field: keyof typeof questionData) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setQuestionData((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
 
   return (
     <div className={styles.container}>
       <h1>Change a question</h1>
-      <Input value={title} onChange={handleChangeTitle} placeholder="Question title" />
+      <Input
+        value={questionData.title}
+        onChange={handleChange('title')}
+        placeholder="Question title"
+      />
       <Input.TextArea
-        value={description}
-        onChange={handleDescriptionChange}
+        value={questionData.description}
+        onChange={handleChange('description')}
         placeholder="Question description"
       />
 
       <div className={styles.snippet}>
         <CodeEditor
-          value={code}
+          value={questionData.attachedCode}
           placeholder="Attached code"
-          onChange={handleCodeChange}
+          onChange={handleChange('attachedCode')}
           className={styles.code}
           required
         />
@@ -68,7 +72,7 @@ export const ChangeQuestionPage = () => {
         <Button
           onClick={submitCode}
           type="primary"
-          disabled={!title.trim() || !description.trim()}
+          disabled={!questionData.title.trim() || !questionData.description.trim()}
           className={styles.button}
         >
           UPDATE QUESTION

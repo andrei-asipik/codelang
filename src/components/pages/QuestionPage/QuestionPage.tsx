@@ -6,11 +6,12 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, addAnswer, AnswerProps, fetchQuestionById } from '@store';
 import { Question, Answer } from '@organisms';
+import { useAuth } from '@hooks';
 
 export const QuestionPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { id: questionId } = useParams();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated } = useAuth();
   const {
     currentQuestion: question,
     loading: questionLoading,

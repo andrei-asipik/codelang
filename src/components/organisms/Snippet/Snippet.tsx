@@ -12,6 +12,7 @@ import {
   MarkProps,
   SnippetProps,
 } from '@store';
+import { useAuth } from '@hooks';
 
 interface SnippetComponentProps {
   snippet: SnippetProps;
@@ -20,7 +21,7 @@ interface SnippetComponentProps {
 export const Snippet = ({ snippet }: SnippetComponentProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated } = useAuth();
   const user = useSelector((state: RootState) => state.user.user);
   const activeUserId = String(user?.id);
 
