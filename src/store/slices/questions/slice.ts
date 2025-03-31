@@ -1,147 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '@services';
-
-export interface QuestionProps {
-  id: string;
-  title: string;
-  description: string;
-  attachedCode: string;
-  answers: AnswerProps[];
-  user: UserProps;
-  isResolved: boolean;
-}
-export interface AnswerProps {
-  id: string;
-  content: string;
-  isCorrect: boolean;
-  user: UserProps;
-}
-
-export interface UserProps {
-  id: string;
-  username: string;
-  role: string;
-}
-
-export interface CreateQuestionPayload {
-  title: string;
-  description: string;
-  attachedCode?: string;
-}
-export interface ChangeQuestionPayload {
-  payload: CreateQuestionPayload;
-  questionId: string;
-}
-export interface AddAnswerPayload {
-  questionId: string;
-  content: string;
-}
-
-interface QuestionState {
-  questions: QuestionProps[];
-  loading: boolean;
-  error: string | null;
-  totalItems: number;
-  success: boolean;
-  currentQuestion: QuestionProps | null;
-  answerLoading: boolean;
-}
-
-const initialState: QuestionState = {
-  questions: [],
-  loading: false,
-  error: null,
-  success: false,
-  totalItems: 1,
-  currentQuestion: null,
-  answerLoading: false,
-};
-
-export const fetchQuestions = createAsyncThunk(
-  'questions/fetchQuestions',
-  async (page: number, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/questions?limit=10&page=${page}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Registration error');
-    }
-  }
-);
-
-export const createQuestion = createAsyncThunk(
-  'questions/crateQuestion',
-  async (payload: CreateQuestionPayload, { rejectWithValue }) => {
-    try {
-      const response = await api.post(`/questions`, payload);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Create question error');
-    }
-  }
-);
-
-export const deleteQuestion = createAsyncThunk(
-  'questions/deleteQuestion',
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await api.delete(`/questions/${id}`);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to delete question');
-    }
-  }
-);
-
-export const fetchQuestionById = createAsyncThunk(
-  'questions/fetchQuestionById',
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/questions/${id}`);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to load question');
-    }
-  }
-);
-
-export const deleteAnswer = createAsyncThunk(
-  'questions/deleteAnswer',
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await api.delete(`/answers/${id}`);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to delete answer');
-    }
-  }
-);
-
-export const addAnswer = createAsyncThunk(
-  'questions/addAnswer',
-  async (payload: AddAnswerPayload, { rejectWithValue }) => {
-    try {
-      const response = await api.post(`/answers`, payload);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to add answer');
-    }
-  }
-);
-export const changeQuestion = createAsyncThunk(
-  'questions/changeQuestion',
-  async ({ payload, questionId }: ChangeQuestionPayload, { rejectWithValue }) => {
-    try {
-      const response = await api.patch(`/questions/${questionId}`, payload);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to update question');
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { initialState } from './initialState';
+import {
+  addAnswer,
+  changeQuestion,
+  createQuestion,
+  deleteAnswer,
+  deleteQuestion,
+  fetchQuestionById,
+  fetchQuestions,
+} from './thunks';
 
 const questionSlice = createSlice({
-  name: 'auth',
+  name: 'questions',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

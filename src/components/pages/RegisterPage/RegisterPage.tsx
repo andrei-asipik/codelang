@@ -3,7 +3,7 @@ import styles from './register-page.module.scss';
 import { Rule } from 'antd/es/form';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RegisterData, registerUser, AppDispatch, RootState } from '@store';
+import { AppDispatch, RegisterData, registerUser, RootState } from '@store';
 import { useEffect } from 'react';
 
 export const RegisterPage = () => {

@@ -4,7 +4,14 @@ import { Button } from 'antd';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { AppDispatch, RootState, addSnippetMark, deleteSnippet, Mark, SnippetProps } from '@store';
+import {
+  AppDispatch,
+  RootState,
+  addSnippetMark,
+  deleteSnippet,
+  MarkProps,
+  SnippetProps,
+} from '@store';
 
 interface SnippetComponentProps {
   snippet: SnippetProps;
@@ -28,7 +35,7 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
   const hasLike = marks.some((mark) => mark.type === 'like' && mark.user.id === activeUserId);
   const hasDislike = marks.some((mark) => mark.type === 'dislike' && mark.user.id === activeUserId);
 
-  const handleMarkClick = (mark: Mark['type']) => {
+  const handleMarkClick = (mark: MarkProps['type']) => {
     if (isAuthenticated) {
       dispatch(addSnippetMark({ id: snippet.id, mark }));
     } else {
@@ -115,4 +122,4 @@ export const Snippet = ({ snippet }: SnippetComponentProps) => {
     </div>
   );
 };
-export { Mark };
+export { MarkProps as Mark };

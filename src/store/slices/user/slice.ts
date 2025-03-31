@@ -1,117 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { api } from '@services';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { initialState } from './initialState';
+import { User } from './types';
 
-export interface User {
-  id: number;
-  username: string;
-  role: string;
-  statistic?: UserStatistic;
-}
-
-export interface UserStatistic {
-  snippetsCount: number;
-  rating: number;
-  commentsCount: number;
-  likesCount: number;
-  dislikesCount: number;
-  questionsCount: number;
-  correctAnswersCount: number;
-  regularAnswersCount: number;
-}
-
-interface UserState {
-  user: User | null;
-  loading?: boolean;
-  error: string | null;
-  success?: boolean;
-  users: User[];
-  totalItems: number;
-  checkedUser: User | null;
-}
-
-const initialState: UserState = {
-  user: null,
-  loading: false,
-  error: null,
-  success: false,
-  users: [],
-  totalItems: 1,
-  checkedUser: null,
-};
-
-export interface UpdateNameData {
-  username: string;
-}
-export interface UpdatePasswordData {
-  oldPassword: string;
-  newPassword: string;
-}
-
-export const fetchUserStatistic = createAsyncThunk(
-  'user/fetchUserStatistic',
-  async (id: number, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/users/${id}/statistic`);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to load user statistics');
-    }
-  }
-);
-
-export const updateUserName = createAsyncThunk(
-  'user/updateUserName',
-  async (data: UpdateNameData, { rejectWithValue }) => {
-    try {
-      const response = await api.patch('/me', data);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to change name');
-    }
-  }
-);
-
-export const updatePassword = createAsyncThunk(
-  'user/updatePassword',
-  async (data: UpdatePasswordData, { rejectWithValue }) => {
-    try {
-      await api.patch('/me/password', data);
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to change password');
-    }
-  }
-);
-
-export const deleteUser = createAsyncThunk('user/deleteUser', async (_, { rejectWithValue }) => {
-  try {
-    await api.delete('/me');
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.message || 'Failed to delete user');
-  }
-});
-
-export const fetchUsers = createAsyncThunk(
-  'users/fetchUsers',
-  async ({ page }: { page: number }, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/users?limit=20&page=${page}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Something went wrong');
-    }
-  }
-);
-export const fetchUserStatisticById = createAsyncThunk(
-  'user/fetchUserStatisticById',
-  async (userId: number, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/users/${userId}/statistic`);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to load user statistics');
-    }
-  }
-);
+import {
+  fetchUserStatistic,
+  fetchUserStatisticById,
+  updateUserName,
+  updatePassword,
+  deleteUser,
+  fetchUsers,
+} from './thunks';
 
 const userSlice = createSlice({
   name: 'user',

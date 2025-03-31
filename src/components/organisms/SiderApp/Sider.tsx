@@ -17,7 +17,6 @@ export const SiderApp = () => {
   const username = isAuthenticated ? user?.username : 'Guest';
 
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log(e);
     navigate(e.key);
   };
 
