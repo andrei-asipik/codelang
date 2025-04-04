@@ -1,0 +1,76 @@
+@use '@styles/colors.scss' as color;
+
+.question {
+  width: 100%;
+  border: 1px solid color.$border-gray;
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  background-color: color.$white;
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 4px 8px;
+
+    .info {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      width: 100%;
+
+      h2 {
+        margin: 8px 0;
+      }
+
+      span {
+        color: color.$text-color-gray;
+      }
+
+      .button {
+        color: color.$primary-color;
+      }
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  p {
+    padding-left: 16px;
+  }
+  h4 {
+    color: color.$text-color-gray;
+    margin: 16px 32px 8px;
+  }
+
+  .button {
+    margin-left: 12px;
+    color: color.$primary-color;
+    display: flex;
+    flex-direction: column;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .button span {
+    color: color.$primary-color !important;
+  }
+
+  .code {
+    background-color: inherit;
+    color: color.$code-color;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid color.$border-gray;
+    border-radius: 4px;
+  }
+}

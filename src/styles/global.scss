@@ -1,0 +1,18 @@
+@use './fonts.scss' as fonts;
+
+* {
+  @include fonts.courier-prime;
+}
+
+.ant-menu-item-selected {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.ant-list-item-meta-description {
+  overflow-wrap: break-word;
+}
+
+.ant-input {
+  @include fonts.courier-prime;
+}

@@ -10,12 +10,20 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "@utils/*": ["src/utils/*"],
-      "@templates/*": ["src/components/templates/*"],
-      "@pages/*": ["src/components/pages/*"],
-      "@organisms/*": ["src/components/organisms/*"]
+      "@atoms": ["src/components/atoms"],
+      "@molecules": ["src/components/molecules"],
+      "@organisms": ["src/components/organisms"],
+      "@templates": ["src/components/templates"],
+      "@pages": ["src/components/pages"],
+      "@icons": ["src/assets/icons"],
+      "@services": ["src/services"],
+      "@styles": ["src/styles"],
+      "@store": ["src/store"],
+      "@hooks": ["src/hooks"],
+      "@utils": ["src/utils"]
     }
   },
   "ts-node": {

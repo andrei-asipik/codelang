@@ -1,0 +1,46 @@
+@use '@styles/colors.scss' as color;
+
+.sider {
+  background-color: color.$primary-color;
+  width: 300px;
+  border-top: 2px solid color.$text-color-white;
+  display: flex;
+  flex-direction: column;
+
+  .top {
+    margin: 20px 5px;
+    color: color.$text-color-white;
+
+    span {
+      margin: 0 5px;
+    }
+  }
+
+  .menu {
+    background-color: inherit;
+
+    li {
+      color: color.$text-color-white;
+      display: flex;
+      align-items: center;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    li[role='separator'] {
+      border-color: color.$text-color-white;
+    }
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: center;
+
+    .button {
+      margin: 20px;
+    }
+  }
+}

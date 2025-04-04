@@ -1,0 +1,46 @@
+@use '@styles/colors.scss' as color;
+
+.snippet {
+  width: 100%;
+  border: 1px solid color.$border-gray;
+  border-radius: 4px;
+  background: color.$white;
+
+  .header,
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+
+    div {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .header {
+    padding: 8px;
+    border-bottom: 1px solid color.$border-gray;
+  }
+  .footer {
+    border-top: 1px solid color.$border-gray;
+
+    .buttons button {
+      color: color.$primary-color;
+    }
+  }
+
+  .code {
+    background-color: inherit;
+    color: color.$code-color;
+    width: 100%;
+    min-height: 200px;
+    padding: 10px;
+  }
+}

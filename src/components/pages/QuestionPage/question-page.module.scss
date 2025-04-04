@@ -1,0 +1,27 @@
+@use '@styles/colors.scss' as color;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+
+  .question {
+    margin-top: 16px;
+  }
+}
+
+.answer {
+  background: color.$white;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 16px 0 8px;
+
+  h2 {
+    margin-left: 35px;
+  }
+
+  .button {
+    margin-top: 10px;
+  }
+}

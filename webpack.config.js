@@ -5,6 +5,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Dotenv from 'dotenv-webpack';
 import 'dotenv/config';
+import webpack from 'webpack';
 
 import { merge } from 'webpack-merge';
 import path from 'path';
@@ -29,15 +30,24 @@ export default (env = {}) => {
       modules: ['node_modules'],
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
-        '@components': path.resolve(__dirname, 'src/components/'),
-        '@utils': path.resolve(__dirname, 'src/utils/'),
-        '@organisms': path.resolve(__dirname, 'src/components/organisms/'),
-        '@pages': path.resolve(__dirname, 'src/components/pages/'),
-        '@templates': path.resolve(__dirname, 'src/components/templates/'),
+        '@atoms': resolve(__dirname, 'src/components/atoms'),
+        '@molecules': resolve(__dirname, 'src/components/molecules'),
+        '@organisms': resolve(__dirname, 'src/components/organisms'),
+        '@templates': resolve(__dirname, 'src/components/templates'),
+        '@pages': resolve(__dirname, 'src/components/pages'),
+        '@icons': resolve(__dirname, 'src/assets/icons'),
+        '@services': resolve(__dirname, 'src/services'),
+        '@styles': resolve(__dirname, 'src/styles'),
+        '@store': resolve(__dirname, 'src/store'),
+        '@hooks': resolve(__dirname, 'src/hooks'),
+        '@utils': resolve(__dirname, 'src/utils'),
       },
     },
     plugins: [
       new Dotenv(),
+      new webpack.DefinePlugin({
+        'process.env.CODELANG_API_URL': JSON.stringify(process.env.CODELANG_API_URL),
+      }),
       new HtmlWebpackPlugin({
         template: join(__dirname, 'src', 'index.html'),
         filename: 'index.html',
@@ -95,7 +105,11 @@ export default (env = {}) => {
           exclude: /\.module\.(css|scss)$/,
         },
         {
-          test: /\.(png|svg|jpg|jpeg|webp|gif)$/i,
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
+        },
+        {
+          test: /\.(png|jpg|jpeg|webp|gif)$/i,
           type: 'asset/resource',
           generator: { filename: 'images/[hash][ext][query]' },
         },
@@ -120,6 +134,18 @@ export default (env = {}) => {
       open: true,
       static: { directory: join(__dirname, 'dist') },
       historyApiFallback: true,
+      proxy: [
+        {
+          context: ['/api'],
+          target: process.env.CODELANG_API_URL,
+          changeOrigin: true,
+          secure: false,
+          logLevel: 'debug',
+          onProxyReq: (proxyReq) => {
+            console.log('Proxying request to:', proxyReq.getHeader('host') + proxyReq.path);
+          },
+        },
+      ],
     },
     target: 'web',
     plugins: [

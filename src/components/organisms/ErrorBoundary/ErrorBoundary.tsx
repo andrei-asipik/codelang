@@ -1,4 +1,4 @@
-import { isObject } from '@utils/helpers';
+import { isObject } from '@utils';
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
 
 type ErrorResponseDataType = {

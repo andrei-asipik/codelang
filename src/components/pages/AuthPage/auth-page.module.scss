@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+
+  .form {
+    margin-top: 1.5rem;
+
+    .button {
+      width: 100%;
+      justify-content: center;
+      display: flex;
+    }
+  }
+
+  .link {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+}

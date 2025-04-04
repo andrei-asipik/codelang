@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@mixin courier-prime {
+  font-family: 'Courier Prime', monospace;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@mixin courier-prime-bold {
+  @include courier-prime;
+  font-weight: 700;
+}
+
+@mixin courier-prime-bold-italic {
+  @include courier-prime-bold;
+  font-style: italic;
+}
+
+@mixin courier-prime-20 {
+  @include courier-prime;
+  font-size: 20px;
+}
